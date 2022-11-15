@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home page{% endblock %}
+
+{% block body %}
+    <h1>home page </h1>
+
+    {%  if app.user %}
+        <p>welcome back {{ app.user.firstName ~ ' ' ~ app.user.lastName}}!</p>
+    {% endif %}
+
+{% endblock %}
