@@ -79,4 +79,26 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', 'Your email address has been verified.');
         return $this->redirectToRoute('app_login');
     }
+
+    #[Route('/verify/resend', name: 'app_verify_resend_email')]
+    public function verifyResend(): Response
+    {
+        return $this->render('registration/resendVerification.html.twig');
+    }
+
+    #[Route('/verify/send_new_email/{id}', name: 'app_verify_send_new_email')]
+    public function verifySendNewEmail(int $id, UserRepository $userRepository)
+    {
+        $user = $userRepository->findOneBy(['id'=>$id]);
+        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            (new TemplatedEmail())
+                ->from(new Address('info@hairsalons.com', 'Hair Salon Administration'))
+                ->to($user->getEmail())
+                ->subject('Please Verify your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+
+        $this->addFlash('success', 'Please verify your account before logging in! We sent you verification email.');
+        return $this->redirectToRoute('app_login');
+    }
 }

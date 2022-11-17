@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Verify Email{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="login-form bg-light mt-4 p-4">
+                <h1 class="h3 mb-3 font-weight-normal">Verify your Email</h1>
+                <p>
+                    A verification email was sent - please click it to enable your account before logging in.
+                    <br><br>
+                    If you need new verification email, click on button below.
+                </p>
+                <a href="{{ path('app_verify_send_new_email', {'id' : app.request.get('id') } ) }}" class="btn btn-primary">Resend Email</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
