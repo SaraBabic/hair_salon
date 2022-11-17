@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,8 @@ class EmailVerifier
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
             $user->getId(),
-            $user->getEmail()
+            $user->getEmail(),
+            ['id' => $user->getId()]
         );
 
         $context = $email->getContext();
@@ -40,12 +42,20 @@ class EmailVerifier
     /**
      * @throws VerifyEmailExceptionInterface
      */
-    public function handleEmailConfirmation(Request $request, UserInterface $user): void
+    public function handleEmailConfirmation(Request $request, UserRepository $userRepository): void
     {
-        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
+        $user = $userRepository->find($request->query->get('id'));
+        if(!$user){
+            throw  new \Exception('User not found.');
+        }
+
+        $this->verifyEmailHelper->validateEmailConfirmation(
+            $request->getUri(),
+            $user->getId(),
+            $user->getEmail()
+        );
 
         $user->setIsVerified(true);
-
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
