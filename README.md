@@ -21,3 +21,6 @@ da bi modifikovanje js i css bilo vidljivo na sajtu(da se naprave ti fajlovi u p
 da bi se ti fajlovi mogli ukljuciti u twigu:
     u webpack.config.js dodati novi entry:
         .addEntry('naziv na koji cemo se pozivati u twigu', 'putanja do tog fajla')
+
+da se ucitaju 'fake' podaci o salonima (pomocu factory-ja):
+    php bin/console doctrine:fixtures:load
