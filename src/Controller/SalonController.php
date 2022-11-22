@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Salon;
+use App\Repository\SalonRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,16 @@ class SalonController extends AbstractController
 
         return $this->render('salon/index.html.twig', [
             'salons' => $salons,
+        ]);
+    }
+
+    #[Route('/salon/{id}', name:'app_salon_by_id')]
+    public function salonById(SalonRepository $repository, int $id):Response
+    {
+        $salon = $repository->findOneBy(['id'=>$id]);
+
+        return $this->render('salon/oneSalon.html.twig',[
+            'salon'=>$salon
         ]);
     }
 }

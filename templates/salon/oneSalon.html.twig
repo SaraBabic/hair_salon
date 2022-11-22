@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Salon {{ salon.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="w-75 mx-auto my-5 ">
+            <h2 class="ms-5 mt-3">{{ salon.name }}</h2>
+            <div class=" d-flex justify-content-evenly">
+                <div class="p-3">
+                    <img src="{{ asset('build/' ~ salon.imagePath) }}" alt="salon photo" width="300" height="300">
+                </div>
+                <div class="ps-3 pt-3">
+                    <h6>
+                        <img src="{{ asset('build/images/location_icon.png') }}" alt="location" width="20" height="20">
+                        {{ salon.city }}, {{ salon.address }}
+                    </h6>
+                    <br>
+                    <h6>
+                        <img src="{{ asset('build/images/phone_icon.png') }}" alt="location" width="20" height="20">
+                        {{ salon.phoneNumber }}
+                    </h6>
+                    <br>
+                    <p>
+                        <img src="{{ asset('build/images/info_icon.png') }}" alt="info" width="20" height="20">
+                        {{ salon.description }}
+                    </p>
+                    <br>
+                    <p>...lista mogucnosti...</p>
+                    <br>
+                    <button class="btn" style="background-color: #75BBBF;">Make an appointment</button>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

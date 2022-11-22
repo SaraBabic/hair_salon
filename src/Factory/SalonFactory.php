@@ -23,8 +23,8 @@ final class SalonFactory extends ModelFactory
             'city' => self::faker()->city(),
             'isActive' => self::faker()->boolean(85),
             'phoneNumber' => self::faker()->phoneNumber(),
-            'description' => self::faker()->realText(350),
-            'imagePath' => 'https://api.lorem.space/image/house?w=150&h=150'
+            'description' => self::faker()->text(350),
+            'imagePath' => 'images/salon_example.jpg'
         ];
     }
 

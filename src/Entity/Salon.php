@@ -104,6 +104,11 @@ class Salon
         return $this->description;
     }
 
+    public function getShortDescription():?string
+    {
+        return substr($this->description,0,100).'...';
+    }
+
     public function setDescription(?string $description): self
     {
         $this->description = $description;

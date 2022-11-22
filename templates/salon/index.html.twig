@@ -4,11 +4,27 @@
 
 {% block body %}
 
-<div class="">
-    {% for salon in salons %}
-        <h2>{{ salon.getName }}</h2>
-        <p>{{ salon.description }}</p>
-        <img src="{{salon.imagePath }}" alt="img">
-    {% endfor %}
-</div>
+    <div class="container-fluid">
+        {% for salon in salons %}
+            <div class="border w-50 p-2 my-2 mx-auto">
+                <a href="{{ path('app_salon_by_id', {'id': salon.id}) }}" class="text-decoration-none text-black d-flex justify-content-evenly">
+                <div class="p-2">
+                   <img src="{{ asset('build/'~ salon.imagePath) }}" alt="img" width="200" height="200">
+                </div>
+                <div class="ps-3 pt-2">
+                    <h2>{{ salon.getName }}</h2>
+                    <h5>
+                        <img src="{{ asset('build/images/location_icon.png') }}" alt="location" width="20" height="20">
+                        {{ salon.city }}
+                    </h5>
+                    <p>
+                        <img src="{{ asset('build/images/info_icon.png') }}" alt="info" width="20" height="20">
+                        {{ salon.shortDescription }}
+                    </p>
+                </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}
