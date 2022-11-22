@@ -2,11 +2,13 @@
 
 {% block title %}Home page{% endblock %}
 
-{% block body %}
-    <h1>home page </h1>
+{#{%  block stylesheets %} {{ encore_entry_link_tags('')}} {% endblock %}#}
 
-    {%  if app.user %}
-        <p>welcome back {{ app.user.firstName ~ ' ' ~ app.user.lastName}}!</p>
-    {% endif %}
+{% block body %}
+
+    <div >
+        <img src="{{ asset('build/images/home-bg.png') }}" alt="home_background">
+    </div>
+
 
 {% endblock %}
