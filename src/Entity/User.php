@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -46,6 +48,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private ?Salon $salon = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SalonRating::class)]
+    private Collection $salonRatings;
+
+    public function __construct()
+    {
+        $this->salonRatings = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -184,6 +194,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->salon = $salon;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SalonRating>
+     */
+    public function getSalonRatings(): Collection
+    {
+        return $this->salonRatings;
+    }
+
+    public function addSalonRating(SalonRating $salonRating): self
+    {
+        if (!$this->salonRatings->contains($salonRating)) {
+            $this->salonRatings->add($salonRating);
+            $salonRating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalonRating(SalonRating $salonRating): self
+    {
+        if ($this->salonRatings->removeElement($salonRating)) {
+            // set the owning side to null (unless already changed)
+            if ($salonRating->getUser() === $this) {
+                $salonRating->setUser(null);
+            }
+        }
 
         return $this;
     }

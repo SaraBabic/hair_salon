@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SalonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SalonRepository::class)]
@@ -37,6 +39,14 @@ class Salon
     #[ORM\OneToOne(inversedBy: 'salon', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
+
+    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonRating::class)]
+    private Collection $rating;
+
+    public function __construct()
+    {
+        $this->rating = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -140,6 +150,36 @@ class Salon
     public function setOwner(User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SalonRating>
+     */
+    public function getSalonRatings(): Collection
+    {
+        return $this->rating;
+    }
+
+    public function addUser(SalonRating $rating): self
+    {
+        if (!$this->rating->contains($rating)) {
+            $this->rating->add($rating);
+            $rating->setSalon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(SalonRating $rating): self
+    {
+        if ($this->rating->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getSalon() === $this) {
+                $rating->setSalon(null);
+            }
+        }
 
         return $this;
     }
