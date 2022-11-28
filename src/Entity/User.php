@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -46,6 +48,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private ?Salon $salon = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SalonRating::class)]
+    private Collection $salonRatings;
+
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Reservation::class)]
+    private Collection $customerReservations;
+
+    #[ORM\OneToMany(mappedBy: 'hairdresser', targetEntity: Reservation::class)]
+    private Collection $hairdresserReservations;
+
+    public function __construct()
+    {
+        $this->salonRatings = new ArrayCollection();
+        $this->customerReservations = new ArrayCollection();
+        $this->hairdresserReservations = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -184,6 +202,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->salon = $salon;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SalonRating>
+     */
+    public function getSalonRatings(): Collection
+    {
+        return $this->salonRatings;
+    }
+
+    public function addSalonRating(SalonRating $salonRating): self
+    {
+        if (!$this->salonRatings->contains($salonRating)) {
+            $this->salonRatings->add($salonRating);
+            $salonRating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalonRating(SalonRating $salonRating): self
+    {
+        if ($this->salonRatings->removeElement($salonRating)) {
+            // set the owning side to null (unless already changed)
+            if ($salonRating->getUser() === $this) {
+                $salonRating->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getCustomerReservations(): Collection
+    {
+        return $this->customerReservations;
+    }
+
+    public function addCustomerReservation(Reservation $customerReservation): self
+    {
+        if (!$this->customerReservations->contains($customerReservation)) {
+            $this->customerReservations->add($customerReservation);
+            $customerReservation->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerReservation(Reservation $customerReservation): self
+    {
+        if ($this->customerReservations->removeElement($customerReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($customerReservation->getCustomer() === $this) {
+                $customerReservation->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getHairdresserReservations(): Collection
+    {
+        return $this->hairdresserReservations;
+    }
+
+    public function addHairdresserReservation(Reservation $hairdresserReservation): self
+    {
+        if (!$this->hairdresserReservations->contains($hairdresserReservation)) {
+            $this->hairdresserReservations->add($hairdresserReservation);
+            $hairdresserReservation->setHairdresser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHairdresserReservation(Reservation $hairdresserReservation): self
+    {
+        if ($this->hairdresserReservations->removeElement($hairdresserReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($hairdresserReservation->getHairdresser() === $this) {
+                $hairdresserReservation->setHairdresser(null);
+            }
+        }
 
         return $this;
     }

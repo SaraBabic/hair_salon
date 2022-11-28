@@ -29,7 +29,7 @@ class SalonCreateController extends AbstractController
             $user = new User();
             $user->setFirstName($formData['firstName']);
             $user->setLastName($formData['lastName']);
-            $user->setRoles(['salonOwner']);
+            $user->setRoles(['ROLE_SALON_OWNER']);
             $user->setPhoneNumber($formData['phoneNumber']);
             $user->setEmail($formData['email']);
             $user->setPassword(
@@ -47,6 +47,7 @@ class SalonCreateController extends AbstractController
             $salon->setImagePath('path');
             $salon->setIsActive(0);
             $salon->setOwner($user);
+
             $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->persist($salon);
@@ -58,9 +59,5 @@ class SalonCreateController extends AbstractController
         return $this->render('salon_create/index.html.twig', [
             'salonCreateForm' => $form->createView(),
         ]);
-
-//        return $this->render('salon_create/index.html.twig', [
-//            'controller_name' => 'SalonCreateController',
-//        ]);
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SalonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SalonRepository::class)]
@@ -37,6 +39,22 @@ class Salon
     #[ORM\OneToOne(inversedBy: 'salon', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
+
+    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonRating::class)]
+    private Collection $rating;
+
+    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonWorkingHours::class)]
+    private Collection $salonWorkingHours;
+
+    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonServices::class)]
+    private Collection $salonServices;
+
+    public function __construct()
+    {
+        $this->rating = new ArrayCollection();
+        $this->salonWorkingHours = new ArrayCollection();
+        $this->salonServices = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -140,6 +158,96 @@ class Salon
     public function setOwner(User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SalonRating>
+     */
+    public function getSalonRatings(): Collection
+    {
+        return $this->rating;
+    }
+
+    public function addUser(SalonRating $rating): self
+    {
+        if (!$this->rating->contains($rating)) {
+            $this->rating->add($rating);
+            $rating->setSalon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(SalonRating $rating): self
+    {
+        if ($this->rating->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getSalon() === $this) {
+                $rating->setSalon(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SalonWorkingHours>
+     */
+    public function getSalonWorkingHours(): Collection
+    {
+        return $this->salonWorkingHours;
+    }
+
+    public function addSalonWorkingHour(SalonWorkingHours $salonWorkingHour): self
+    {
+        if (!$this->salonWorkingHours->contains($salonWorkingHour)) {
+            $this->salonWorkingHours->add($salonWorkingHour);
+            $salonWorkingHour->setSalon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalonWorkingHour(SalonWorkingHours $salonWorkingHour): self
+    {
+        if ($this->salonWorkingHours->removeElement($salonWorkingHour)) {
+            // set the owning side to null (unless already changed)
+            if ($salonWorkingHour->getSalon() === $this) {
+                $salonWorkingHour->setSalon(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SalonServices>
+     */
+    public function getSalonServices(): Collection
+    {
+        return $this->salonServices;
+    }
+
+    public function addSalonService(SalonServices $salonService): self
+    {
+        if (!$this->salonServices->contains($salonService)) {
+            $this->salonServices->add($salonService);
+            $salonService->setSalon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalonService(SalonServices $salonService): self
+    {
+        if ($this->salonServices->removeElement($salonService)) {
+            // set the owning side to null (unless already changed)
+            if ($salonService->getSalon() === $this) {
+                $salonService->setSalon(null);
+            }
+        }
 
         return $this;
     }
