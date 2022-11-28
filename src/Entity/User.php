@@ -52,9 +52,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SalonRating::class)]
     private Collection $salonRatings;
 
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Reservation::class)]
+    private Collection $customerReservations;
+
+    #[ORM\OneToMany(mappedBy: 'hairdresser', targetEntity: Reservation::class)]
+    private Collection $hairdresserReservations;
+
     public function __construct()
     {
         $this->salonRatings = new ArrayCollection();
+        $this->customerReservations = new ArrayCollection();
+        $this->hairdresserReservations = new ArrayCollection();
     }
 
 
@@ -222,6 +230,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($salonRating->getUser() === $this) {
                 $salonRating->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getCustomerReservations(): Collection
+    {
+        return $this->customerReservations;
+    }
+
+    public function addCustomerReservation(Reservation $customerReservation): self
+    {
+        if (!$this->customerReservations->contains($customerReservation)) {
+            $this->customerReservations->add($customerReservation);
+            $customerReservation->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerReservation(Reservation $customerReservation): self
+    {
+        if ($this->customerReservations->removeElement($customerReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($customerReservation->getCustomer() === $this) {
+                $customerReservation->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getHairdresserReservations(): Collection
+    {
+        return $this->hairdresserReservations;
+    }
+
+    public function addHairdresserReservation(Reservation $hairdresserReservation): self
+    {
+        if (!$this->hairdresserReservations->contains($hairdresserReservation)) {
+            $this->hairdresserReservations->add($hairdresserReservation);
+            $hairdresserReservation->setHairdresser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHairdresserReservation(Reservation $hairdresserReservation): self
+    {
+        if ($this->hairdresserReservations->removeElement($hairdresserReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($hairdresserReservation->getHairdresser() === $this) {
+                $hairdresserReservation->setHairdresser(null);
             }
         }
 
