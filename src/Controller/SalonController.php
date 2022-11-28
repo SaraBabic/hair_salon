@@ -21,7 +21,7 @@ class SalonController extends AbstractController
         ]);
     }
 
-    #[Route('/salon/{id}', name:'app_salon_by_id')]
+    #[Route('/salon/{id}/show', name:'app_salon_by_id')]
     public function salonById(SalonRepository $repository, int $id):Response
     {
         $salon = $repository->findOneBy(['id'=>$id]);
