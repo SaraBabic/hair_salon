@@ -2,30 +2,30 @@
 
 namespace App\Factory;
 
-use App\Entity\Salon;
-use App\Repository\SalonRepository;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 
-final class SalonFactory extends ModelFactory
+final class SalonOwnerFactory extends ModelFactory
 {
     public function __construct()
     {
         parent::__construct();
+
     }
 
     protected function getDefaults(): array
     {
         return [
-            'name' => self::faker()->text(25),
-            'address' => self::faker()->address(),
-            'city' => self::faker()->city(),
-            'isActive' => self::faker()->boolean(85),
+            'email' => self::faker()->email(),
+            'roles' => ['ROLE_SALON_OWNER'],
+            'password' => '$2a$12$8gHJbA9QGGu7NQ82J1vooOJi6/9BoQu/l4G8r4THP5lDgTfdfGcaq',
+            'firstName' => self::faker()->firstName(),
+            'lastName' => self::faker()->lastName(),
             'phoneNumber' => self::faker()->phoneNumber(),
-            'description' => self::faker()->text(350),
-            'imagePath' => 'images/salon_example.jpg',
-            'owner' => SalonOwnerFactory::createOne()
+            'isVerified' => true,
         ];
     }
 
@@ -33,12 +33,12 @@ final class SalonFactory extends ModelFactory
     {
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
-            // ->afterInstantiate(function(Salon $salon): void {})
+            // ->afterInstantiate(function(User $user): void {})
         ;
     }
 
     protected static function getClass(): string
     {
-        return Salon::class;
+        return User::class;
     }
 }
