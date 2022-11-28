@@ -14,14 +14,16 @@
         {% endblock %}
     </head>
     <body>
-    <nav class="navbar navbar-expand-lg" style="background: linear-gradient(to bottom, rgb(117, 187, 191, 1), rgb(117, 187, 191, 0.4));">
+    <nav class="navbar navbar-expand-lg header">
         <div class="container-fluid">
             <a class="navbar-brand ms-4" href="{{ path('app_home') }}">
-                <img src="{{ asset('build/images/logo.png') }}" alt="hair_salon_logo">
-                HairSalons
+                <div class="logo">
+                    <img src="{{ asset('build/images/logo.png') }}" alt="hair_salon_logo">
+                    <h2 class="logo-text">HairSalons</h2>
+                </div>
             </a>
             <div>
-                <ul class="navbar-nav me-3 mb-2 mb-lg-0">
+                <ul class="navbar-nav me-3 mb-2 mb-lg-0 navbar-links">
                     <li class="nav-item">
                         <a class="nav-link " href="#">About us</a>
                     </li>
@@ -48,27 +50,32 @@
         {% block body %}{% endblock %}
 
     <footer>
-        <div class="pt-3 ms-4" style="height: 14vh;"><img src="{{ asset('build/images/logo.png') }}" alt="hair_salon_logo"><span class="fw-bold">HairSalons</span></div>
-        <div class="bg-dark text-light d-flex justify-content-between" style="height: 31vh;">
-            <div class="pt-4">
-                <h3 class="ms-3">About Us</h3>
+        <div class="bg-dark text-light footer-wrapper">
+            <div class="navbar-brand ms-4 footer-logo">
+                <div class="footer-logo-wrapper">
+                    <img src="{{ asset('build/images/footer-logo.png') }}" alt="hair_salon_logo">
+                    <h2 class="logo-text">HairSalons</h2>
+                </div>
+                <div class="developed">
+                    <p>Developed by Ivona & Sara</p>
+                </div>
             </div>
-            <div class="pt-4">
-                <h5>Social Media</h5>
-                <ul>
-                    <li><a href="#">instagram</a></li>
-                    <li><a href="#">facebook</a></li>
-                    <li><a href="#">twitter</a></li>
-                </ul>
-            </div>
-            <div class="pt-4">
-                <h5>Become a Member</h5>
-                <ul>
-                    <li><a href="#">I'm customer</a></li>
-                    <li><a href="#">I'm salon owner</a></li>
-                </ul>
-            </div>
-            <div>
+                <div class="pt-4 footer-section">
+                    <h5>Social Media</h5>
+                    <ul>
+                        <li><a href="#"><img src="{{ asset('build/images/instagram.png') }}" alt="instagram"><p>instagram</p></a></li>
+                        <li><a href="#"><img src="{{ asset('build/images/facebook.png') }}" alt="facebook"><p>facebook</p></a></li>
+                        <li><a href="#"><img src="{{ asset('build/images/twitter.png') }}" alt="twitter"><p>twitter</p></a></li>
+                    </ul>
+                </div>
+                <div class="pt-4 footer-section">
+                    <h5>Become a Member</h5>
+                    <ul>
+                        <li><a href="#"><img src="{{ asset('build/images/customer.png') }}" alt="instagram"><p>I'm a customer</p></a></li>
+                        <li><a href="#"><img src="{{ asset('build/images/owner.png') }}" alt="instagram"><p>I'm a salon owner</p></a></li>
+                    </ul>
+                </div>
+            <div class="footer-image">
                 <img src="{{ asset('build/images/footer.png') }}" alt="footer_img">
             </div>
         </div>

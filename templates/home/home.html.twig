@@ -6,8 +6,19 @@
 
 {% block body %}
 
-    <div >
-        <img src="{{ asset('build/images/home-bg.png') }}" alt="home_background">
+    <div class="banner">
+        <div class="image-container">
+            <img src="{{ asset('build/images/home-bg.png') }}" alt="home_background" class="home-image img-fluid">
+        </div>
+        <div class="care">
+            <h1>We care about your hair!</h1>
+        </div>
+    </div>
+    <div class="rate">
+        <div class="title">
+            <h1>Highest Rated Hair Salons</h1>
+            <img src="{{ asset('build/images/stars.png') }}" alt="stars">
+        </div>
     </div>
 
 
