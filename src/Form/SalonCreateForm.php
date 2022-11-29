@@ -115,10 +115,9 @@ class SalonCreateForm extends AbstractType {
                 ]
             ])
             ->add('salonImages', FileType::class, [
-                'multiple' => true,
+                'mapped' => false,
                 'attr'     => [
-                    'accept' => 'image/*',
-                    'multiple' => 'multiple'
+                    'accept' => 'image/*'
                 ]
             ])
         ;
