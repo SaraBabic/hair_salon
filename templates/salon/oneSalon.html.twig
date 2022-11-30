@@ -18,7 +18,7 @@
                     </h6>
                     <br>
                     <h6>
-                        <img src="{{ asset('build/images/phone_icon.png') }}" alt="location" width="20" height="20">
+                        <img src="{{ asset('build/images/phone_icon.png') }}" alt="phone" width="20" height="20">
                         {{ salon.phoneNumber }}
                     </h6>
                     <br>
@@ -27,7 +27,25 @@
                         {{ salon.description }}
                     </p>
                     <br>
-                    <p>...lista mogucnosti...</p>
+                    <p>
+                    <h5><img src="{{ asset('build/images/working_hours_icon.png') }}" alt="hours" width="25" height="25">
+                        Open hours:</h5>
+                        <ul>
+                        {% for work_hour in salon.salonWorkingHours %}
+                            <li><span>{{ work_hour.day == 1 ? 'Mon' : work_hour.day == 2 ? 'Tue' : work_hour.day == 3 ? 'Wed' : work_hour.day == 4 ? 'Thu' : work_hour.day == 5 ? 'Fri' }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
+                        {% endfor %}
+                        </ul>
+                    </p>
+                    <br>
+                    <p>
+                        <h5><img src="{{ asset('build/images/scissor_icon.png') }}" alt="scissor" width="20" height="20">
+                        HairSalon Services:</h5>
+                        <ul>
+                            {% for service in salon.salonServices %}
+                                <li>{{ service.name }} - ${{ service.price }}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
                     <br>
                     <button class="btn" style="background-color: #75BBBF;">Make an appointment</button>
                     <br>

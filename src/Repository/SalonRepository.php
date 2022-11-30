@@ -45,6 +45,8 @@ class SalonRepository extends ServiceEntityRepository
     public function findByActivity(): array
     {
         return $this->createQueryBuilder('s')
+            ->addSelect('s.salonServices')
+            ->addSelect('s.salonWorkingHours')
             ->andWhere('s.isActive = 1')
             ->getQuery()
             ->getResult()
