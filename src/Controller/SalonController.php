@@ -14,7 +14,7 @@ class SalonController extends AbstractController
     #[Route('/salon', name: 'app_salon')]
     public function index(ManagerRegistry $doctrine): Response
     {
-        $salons = $doctrine->getRepository(Salon::class)->findByActivity();
+        $salons = $doctrine->getRepository(Salon::class)->findBy(['isActive'=> true]);
 
         return $this->render('salon/index.html.twig', [
             'salons' => $salons,

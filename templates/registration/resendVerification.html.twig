@@ -3,6 +3,7 @@
 {% block title %}Verify Email{% endblock %}
 
 {% block body %}
+    <div class="login_bg">
     <div class="container">
         <div class="row">
             <div class="login-form bg-light mt-4 p-4">
@@ -12,8 +13,9 @@
                     <br><br>
                     If you need new verification email, click on button below.
                 </p>
-                <a href="{{ path('app_verify_send_new_email', {'id' : app.request.get('id') } ) }}" class="btn btn-primary">Resend Email</a>
+                <a href="{{ path('app_verify_send_new_email', {'id' : app.request.get('id') } ) }}" class="btn">Resend Email</a>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}

@@ -1,6 +1,5 @@
 body {
     font-family: 'PT Sans Narrow', sans-serif;
-    padding-bottom: 70px;
 }
 
 /*scroll bar*/
@@ -20,9 +19,13 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #111;
 }
-.header {
+.header, .btn {
     background-color: #75BBBF;
     /*background: linear-gradient(to bottom, rgb(117, 187, 191, 1), rgb(117, 187, 191, 0.4));*/
+}
+.btn:hover{
+    background-color: #417475;
+    color: #fff;
 }
 .navbar-links {
     display: flex;
@@ -67,7 +70,7 @@ body {
 
 /*footer*/
 footer {
-    margin-top: 60px;
+    /*margin-top: 60px;*/
 }
 footer ul {
     padding: 0;
@@ -199,6 +202,13 @@ h1 {
 }
 .rate .title img {
     width: 100px;
+}
+
+.login_bg{
+    background: linear-gradient( rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)) ,url("../images/login_bg.jpg") center no-repeat ;
+    background-size: cover;
+    color: white;
+    height: fit-content;
 }
 
 @media only screen and (max-width: 990px){

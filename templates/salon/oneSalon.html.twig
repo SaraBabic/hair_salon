@@ -10,44 +10,43 @@
             <div class=" d-flex justify-content-evenly">
                 <div class="p-3">
                     <img src="{{ asset('build/images/uploads/' ~ salon.imagePath) }}" alt="salon photo" width="300" height="300">
+                    <div class="mt-3 ms-1">
+                        <h5>
+                            <img src="{{ asset('build/images/working_hours_icon.png') }}" alt="hours" width="25" height="25">
+                            Open hours:
+                        </h5>
+                        <ul style="list-style: none">
+                            {% for work_hour in salon.salonWorkingHours %}
+                                <li><span>{{ work_hour.day == 1 ? 'Mon' : work_hour.day == 2 ? 'Tue' : work_hour.day == 3 ? 'Wed' : work_hour.day == 4 ? 'Thu' : work_hour.day == 5 ? 'Fri' }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
                 <div class="ps-3 pt-3">
-                    <h6>
-                        <img src="{{ asset('build/images/location_icon.png') }}" alt="location" width="20" height="20">
+                    <h6 class="my-3">
+                        <img src="{{ asset('build/images/location_icon.png') }}" alt="location" width="25" height="25">
                         {{ salon.city }}, {{ salon.address }}
                     </h6>
-                    <br>
-                    <h6>
-                        <img src="{{ asset('build/images/phone_icon.png') }}" alt="phone" width="20" height="20">
+                    <h6 class="mb-3">
+                        <img src="{{ asset('build/images/phone_icon.png') }}" alt="phone" width="25" height="25">
                         {{ salon.phoneNumber }}
                     </h6>
-                    <br>
-                    <p>
-                        <img src="{{ asset('build/images/info_icon.png') }}" alt="info" width="20" height="20">
+                    <div>
+                        <img src="{{ asset('build/images/info_icon.png') }}" alt="info" width="25" height="25">
                         {{ salon.description }}
-                    </p>
+                    </div>
                     <br>
-                    <p>
-                    <h5><img src="{{ asset('build/images/working_hours_icon.png') }}" alt="hours" width="25" height="25">
-                        Open hours:</h5>
-                        <ul>
-                        {% for work_hour in salon.salonWorkingHours %}
-                            <li><span>{{ work_hour.day == 1 ? 'Mon' : work_hour.day == 2 ? 'Tue' : work_hour.day == 3 ? 'Wed' : work_hour.day == 4 ? 'Thu' : work_hour.day == 5 ? 'Fri' }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
-                        {% endfor %}
-                        </ul>
-                    </p>
-                    <br>
-                    <p>
-                        <h5><img src="{{ asset('build/images/scissor_icon.png') }}" alt="scissor" width="20" height="20">
+                    <div>
+                        <h5><img src="{{ asset('build/images/scissor_icon.png') }}" alt="scissor" width="25" height="25">
                         HairSalon Services:</h5>
-                        <ul>
+                        <ul style="list-style: none">
                             {% for service in salon.salonServices %}
                                 <li>{{ service.name }} - ${{ service.price }}</li>
                             {% endfor %}
                         </ul>
-                    </p>
+                    </div>
                     <br>
-                    <button class="btn" style="background-color: #75BBBF;">Make an appointment</button>
+                    <button class="btn mt-5" >Make an appointment</button>
                     <br>
                     <br>
                 </div>
