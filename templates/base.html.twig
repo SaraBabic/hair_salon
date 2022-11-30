@@ -25,12 +25,36 @@
             <div>
                 <ul class="navbar-nav me-3 mb-2 mb-lg-0 navbar-links">
                     <li class="nav-item">
+                        <a class="nav-link " href="{{ path('app_salon') }}">Salon Offers</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link " href="#">About us</a>
                     </li>
                     {% if app.user %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
-                    </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                My profile
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for role in app.user.roles %}
+                                    {% if role == 'ROLE_SALON_OWNER' %}
+                                        <li><a class="dropdown-item" href="#">My Salon</a></li>
+                                        <li><a class="dropdown-item" href="#">Salon's Working Hours</a></li>
+                                        <li><a class="dropdown-item" href="#">Salon's Services</a></li>
+                                        <li><a class="dropdown-item" href="#">My hairdressers</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_user_profile') }}">Edit Profile Info</a></li>
+                                    {% endif %}
+                                    {# TODO ovde ostale uloge #}
+                                    {% if role == 'ROLE_USER' %}
+                                        <li><a class="dropdown-item" href="{{ path('app_user_profile') }}">Edit Profile Info</a></li>
+                                        <li><a class="dropdown-item" href="#">My Reservations</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item"  href="{{ path('app_logout') }}">Logout</a></li>
+                            </ul>
+                        </li>
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link " href="{{ path('app_login') }}">Login</a>
