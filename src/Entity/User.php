@@ -58,11 +58,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'hairdresser', targetEntity: Reservation::class)]
     private Collection $hairdresserReservations;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Logs::class)]
+    private Collection $logs;
+
     public function __construct()
     {
         $this->salonRatings = new ArrayCollection();
         $this->customerReservations = new ArrayCollection();
         $this->hairdresserReservations = new ArrayCollection();
+        $this->logs = new ArrayCollection();
     }
 
 
@@ -290,6 +294,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($hairdresserReservation->getHairdresser() === $this) {
                 $hairdresserReservation->setHairdresser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Logs>
+     */
+    public function getLogs(): Collection
+    {
+        return $this->logs;
+    }
+
+    public function addLog(Logs $log): self
+    {
+        if (!$this->logs->contains($log)) {
+            $this->logs->add($log);
+            $log->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLog(Logs $log): self
+    {
+        if ($this->logs->removeElement($log)) {
+            // set the owning side to null (unless already changed)
+            if ($log->getUser() === $this) {
+                $log->setUser(null);
             }
         }
 
