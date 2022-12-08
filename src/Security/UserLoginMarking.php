@@ -49,6 +49,7 @@ class UserLoginMarking
 
     private function getDeviceType():string
     {
+        //TODO remove message from this class
         require_once 'MobileDetect/Mobile_Detect.php';
         $detect = new Mobile_Detect();
         $device = 'computer';
@@ -64,8 +65,8 @@ class UserLoginMarking
     private function getMoreIpAddressData(string $ip):array
     {
         $data = [];
-
         $apiResponse = $this->httpClient->request('GET', $this->apiLink.'79.101.198.8'.$this->apiDataType);
+        // TODO change this to $this->apiLink.$ip.$this->apiDataType
         $rawData = $apiResponse->toArray();
 
         $data['continent'] = $rawData['continent_code'];
