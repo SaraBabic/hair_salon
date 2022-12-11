@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create services to your salon!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    {% if app.user %}
+        <div class="example-wrapper">
+            <h3>Services</h3>
+
+            {{ form_start(serviceCreateForm) }}
+            {{ form_widget(serviceCreateForm) }}
+            <br>
+            <button type="submit" class="btn btn-primary">Send!</button>
+            {{ form_end(serviceCreateForm) }}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Service name</th>
+                    <th>Service price</th>
+                    <th>Service duration</th>
+                    <th>Delete service</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for service in salon_services %}
+                    <tr>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.price }} din</td>
+                        <td>{{ service.duration }} min</td>
+                        <td><a href="{{ path('delete_service', {id: user.id, salon_id: salon.id, service_id: service.id}) }}"><button type="reset" class="btn btn-danger">Delete</button></a></td>
+{#                        data-toggle="modal" data-target="#myModal"#}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div>
+            <h1>not found</h1>
+        </div>
+    {% endif %}
+{% endblock %}

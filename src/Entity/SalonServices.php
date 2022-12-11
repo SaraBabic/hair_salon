@@ -22,7 +22,7 @@ class SalonServices
     #[ORM\Column]
     private ?int $price = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'salonServices')]
@@ -118,4 +118,5 @@ class SalonServices
 
         return $this;
     }
+
 }

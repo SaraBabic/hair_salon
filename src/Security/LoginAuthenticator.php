@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use App\Entity\User;
 
 class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -42,6 +43,11 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        /** @var User $user */
+        $user = $token->getUser();
+        if (in_array('ROLE_SALON_OWNER', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_owner_dashboard', ['id'=> $user->getId(), 'salon_id' => $user->getSalon()]));
+        }
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }

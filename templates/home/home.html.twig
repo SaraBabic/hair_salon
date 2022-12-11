@@ -14,6 +14,12 @@
             <h1>We care about your hair!</h1>
         </div>
     </div>
+    {% if app.user %}
+        {% if 'ROLE_SALON_OWNER' in app.user.roles %}
+            <h1>Salon owner</h1>
+
+        {% endif %}
+    {% endif %}
     <div class="rate">
         <div class="title">
             <h1>Highest Rated Hair Salons</h1>
