@@ -21,7 +21,7 @@
         <div class="container-fluid">
             {% if app.user %}
                 {% if 'ROLE_SALON_OWNER' in app.user.roles %}
-                    <a class="navbar-brand ms-4" href="{{ path('app_owner_dashboard', {id: user.id}) }}">
+                    <a class="navbar-brand ms-4" href="{{ path('app_owner_dashboard', {id: app.user.id}) }}">
                         <div class="logo">
                             <img src="{{ asset('build/images/logo.png') }}" alt="hair_salon_logo">
                             <h2 class="logo-text">HairSalons</h2>
