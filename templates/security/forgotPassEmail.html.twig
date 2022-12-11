@@ -1,0 +1,8 @@
+<h1>Hi! Click on link below to be able to change password!</h1>
+
+<p>
+    You can change your password by clicking the following link: <br><br>
+    <a href="{{ signedUrl|raw }}">Change</a>.
+    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
+

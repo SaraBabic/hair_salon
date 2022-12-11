@@ -39,17 +39,6 @@ class SalonRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @return Salon[] Returns an array of Salon objects
-     */
-    public function findByActivity(): array
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.isActive = 1')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 
 //    public function findOneBySomeField($value): ?Salon
 //    {
