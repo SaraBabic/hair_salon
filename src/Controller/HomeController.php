@@ -12,9 +12,11 @@ class HomeController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
     public function index(SalonRepository $salonRepository): Response
     {
         $salons = $salonRepository->findFiveBestRatedSalons();
+        $cities = $salonRepository->findAllSalonCities();
 
         return $this->render('home/home.html.twig',[
-            'salons' => $salons
+            'salons' => $salons,
+            'cities' => $cities
         ]);
     }
 

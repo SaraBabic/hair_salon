@@ -47,4 +47,14 @@ class SalonRepository extends ServiceEntityRepository
 
         return $this->getEntityManager()->createQuery($sql)->setMaxResults(5)->getResult();
     }
+
+    public function findAllSalonCities()
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s.city')
+            ->groupBy('s.city')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

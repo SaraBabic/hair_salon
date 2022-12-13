@@ -2,8 +2,6 @@
 
 {% block title %}Home page{% endblock %}
 
-{#{%  block stylesheets %} {{ encore_entry_link_tags('')}} {% endblock %}#}
-
 {% block body %}
 
     <div class="banner">
@@ -20,6 +18,20 @@
 
         {% endif %}
     {% endif %}
+    <div class="w-50 mx-auto mb-5 text-center searchCity">
+            <h3 class="my-3 fw-bold">Find your nearest professional hair salon!</h3>
+            <form method="get" action="{{ path('app_salon') }}" class="mx-auto">
+                <select name="city" class="form-select w-75 mx-auto js-example-basic-single">
+                    <option value="0">Select your city...</option>
+                    {% set len = cities|length - 1 %}
+                    {% for i in 0..len %}
+                        <option value="{{ cities[i].city }}">{{ cities[i].city }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <button class="btn" type="submit">Search</button>
+            </form>
+    </div>
     <div class="rate">
         <div class="title">
             <h1>Highest Rated Hair Salons</h1>
@@ -34,11 +46,14 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ salons[i].name }}</h5>
                     <p class="card-text">
-                         {% set rate = salons[i].rate | round(0,'floor') %}
-                        {% set missing_rate = 5 -  rate %}
-                        {% for i in 1..rate %}
+                        {% set rate =  0 %}
+                        {% if salons[i].rate > 0 %}
+                        {% set rate = salons[i].rate | round(0,'floor') %}
+                            {% for i in 1..rate %}
                             <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
-                        {% endfor %}
+                            {% endfor %}
+                        {% endif %}
+                        {% set missing_rate = 5 -  rate %}
                         {% for i in 1..missing_rate %}
                             <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
                         {% endfor %}
@@ -49,11 +64,22 @@
         {% endfor %}
         </div>
     </div>
+{% endblock %}
 
+<<<<<<< HEAD
 
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('header') }}
+=======
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+>>>>>>> 2715a1e501346712f6a533e3f7f7fa1579551142
 {% endblock %}
