@@ -10,12 +10,15 @@
                 <h2 class="ms-5">{{ salon.name }}</h2>
                 <div>
                     {# <span>{{ rating.avg_rate | slice(0,3) }}</span>#}
-                    {% set rate = rating.avg_rate | round(0, 'floor')  %}
-                    {% set missing_rate = 5 - rate %}
-                    {% for i in 1..rate  %}
-                        <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
-                    {% endfor %}
-                    {% for i in 1..missing_rate  %}
+                    {% set rate =  0 %}
+                    {% if rating.avg_rate > 0 %}
+                        {% set rate = rating.avg_rate | round(0,'floor') %}
+                        {% for i in 1..rate %}
+                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                        {% endfor %}
+                    {% endif %}
+                    {% set missing_rate = 5 -  rate %}
+                    {% for i in 1..missing_rate %}
                         <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
                     {% endfor %}
                 </div>
