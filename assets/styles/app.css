@@ -24,7 +24,7 @@ body {
     width: 100%;
     z-index: 10;
 }
-.btn {
+.blue-button {
     background-color: #fff;
     color: #417475;
     margin: 20px 0;
@@ -48,7 +48,7 @@ body {
 .colored-header {
     background-color: #75BBBF;
 }
-.btn:hover{
+.blue-button:hover{
     background-color: #417475;
     color: #fff;
 }
@@ -95,7 +95,6 @@ body {
 
 /*footer*/
 footer {
-    /*margin-top: 60px;*/
 }
 footer ul {
     padding: 0;
@@ -245,7 +244,49 @@ h1 {
 .login-form {
     padding-top: 120px;
 }
-
+.plant-bg {
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.65)) ,url("../images/owner_bg.jpg") center no-repeat ;
+    background-size: cover;
+    height: 90vh;
+    padding: 100px 0;
+}
+.plant-height {
+    height: fit-content;
+}
+.plant-bg h1 {
+    color: #75BBBF;
+    font-size: 60px;
+}
+.owner-links {
+    color: #fff;
+    font-size: 30px;
+    text-align: center;
+}
+.owner-links a:hover {
+    color: #75BBBF;
+    font-size: 32px;
+}
+.example-wrapper {
+    color: #fff;
+}
+.example-wrapper h3 {
+    text-align: center;
+    color: #75BBBF;
+    font-size: 52px;
+}
+.services-table {
+    color: #fff;
+}
+.salon {
+    color: #fff;
+}
+.modal-content {
+    color: #000;
+}
+.modal-content a {
+    text-decoration: none;
+    color: #fff;
+}
 @media only screen and (max-width: 990px){
     .footer-image {
         display: none;

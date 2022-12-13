@@ -20,6 +20,7 @@ class ServiceCreateForm extends AbstractType {
             ->add('servicePrice', NumberType::class, [
                 'attr' => [ 'class' => 'form-control'],
                 'html5' => true,
+                'label' => "Service Price ( din )",
                 'constraints' => [
                     new Range([
                         'min' => '50',
@@ -30,6 +31,7 @@ class ServiceCreateForm extends AbstractType {
             ->add('serviceDuration', NumberType::class, [
                 'attr' => [ 'class' => 'form-control'],
                 'html5' => true,
+                'label' => 'Service Duration ( min )',
                 'constraints' => [
                     new Range([
                         'min' => '10',

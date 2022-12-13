@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Salon;
 use App\Entity\SalonServices;
 use App\Entity\User;
+use App\Form\SalonForm;
 use App\Form\ServiceCreateForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,16 +34,27 @@ class OwnerController extends AbstractController {
 
     //Salon info
     #[Route('/owner/{id}/salon/{salon_id}/show', name: 'app_owner_salon_show')]
-    public function owner_salon(ManagerRegistry $doctrine, $id):Response {
+    public function owner_salon(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em):Response {
 
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
         $salon = $user->getSalon();
 
+        $form = $this->createForm(SalonForm::class, $salon);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $salon = $form->getData();
+            $em->persist($salon);
+            $em->flush();
+
+            $this->addFlash('success', 'Your data is successfully saved!');
+        }
+
         return $this->render('owner/owner_salon.html.twig', [
             'salon' => $salon,
             'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 

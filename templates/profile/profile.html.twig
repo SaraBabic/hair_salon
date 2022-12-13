@@ -3,14 +3,15 @@
 {% block title %}User profile{% endblock %}
 
 {% block body %}
-
+<div class="plant-bg">
     <div class="w-50 mx-auto pt-4">
         <h3>Profile info</h3>
         {{ form_start(form)}}
-            {{ form_widget(form) }}
-            <br>
-            <button class="btn" type="submit">Update</button>
+        {{ form_widget(form) }}
+        <br>
+        <button class="btn blue-button" type="submit">Update</button>
         {{ form_end(form)}}
     </div>
+</div>
 
 {% endblock %}

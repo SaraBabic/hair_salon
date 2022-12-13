@@ -2,7 +2,6 @@ let scrollpos = window.scrollY;
 
 const header = document.querySelector(".header");
 const scrollChange = 50;
-console.log(header);
 
 const add_class_on_scroll = () => {
     header.classList.add("colored-header");

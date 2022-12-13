@@ -3,7 +3,17 @@
 {% block title %}Salon owner dashboard{% endblock %}
 
 {% block body %}
-
-    <h1>{{ salon.name }}</h1>
+    <div class="plant-bg salon">
+        <div class="w-50 m-auto">
+            <h1>{{ salon.name }}</h1>
+            <div>
+                {{ form_start(form)}}
+                {{ form_widget(form) }}
+                <br>
+                <button class="btn blue-button" type="submit">Update</button>
+                {{ form_end(form)}}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
