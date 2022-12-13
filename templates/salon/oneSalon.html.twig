@@ -4,70 +4,72 @@
 
 {% block body %}
 
-    <div class="container-fluid">
-        <div class="w-75 mx-auto my-5 ">
-            <div class="mt-3 d-flex justify-content-between">
-                <h2 class="ms-5">{{ salon.name }}</h2>
-                <div>
-                    {# <span>{{ rating.avg_rate | slice(0,3) }}</span>#}
-                    {% set rate =  0 %}
-                    {% if rating.avg_rate > 0 %}
-                        {% set rate = rating.avg_rate | round(0,'floor') %}
-                        {% for i in 1..rate %}
-                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+    <div class="plant-bg plant-height">
+        <div class="container-fluid">
+            <div class="w-75 mx-auto my-5 one-salon-card">
+                <div class="mt-3 d-flex justify-content-between">
+                    <h2 class="ms-5">{{ salon.name }}</h2>
+                    <div>
+                        {# <span>{{ rating.avg_rate | slice(0,3) }}</span>#}
+                        {% set rate =  0 %}
+                        {% if rating.avg_rate > 0 %}
+                            {% set rate = rating.avg_rate | round(0,'floor') %}
+                            {% for i in 1..rate %}
+                                <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                            {% endfor %}
+                        {% endif %}
+                        {% set missing_rate = 5 -  rate %}
+                        {% for i in 1..missing_rate %}
+                            <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
                         {% endfor %}
-                    {% endif %}
-                    {% set missing_rate = 5 -  rate %}
-                    {% for i in 1..missing_rate %}
-                        <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
-                    {% endfor %}
-                </div>
-            </div>
-            <div class=" d-flex justify-content-evenly">
-                <div class="p-3">
-                    <img src="{{ asset('build/images/uploads/' ~ salon.imagePath) }}" alt="salon photo" width="300" height="300">
-                    <div class="mt-3 ms-1">
-                        <h5>
-                            <img src="{{ asset('build/images/working_hours_icon.png') }}" alt="hours" width="25" height="25">
-                            Open hours:
-                        </h5>
-                        <ul style="list-style: none">
-                            {% for work_hour in salon.salonWorkingHours %}
-                                <li><span>{{ work_hour.day == 1 ? 'Mon' : work_hour.day == 2 ? 'Tue' : work_hour.day == 3 ? 'Wed' : work_hour.day == 4 ? 'Thu' : work_hour.day == 5 ? 'Fri' }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
-                            {% endfor %}
-                        </ul>
                     </div>
                 </div>
-                <div class="ps-3 pt-3">
-                    <h6 class="my-3">
-                        <img src="{{ asset('build/images/location_icon.png') }}" alt="location" width="25" height="25">
-                        {{ salon.city }}, {{ salon.address }}
-                    </h6>
-                    <h6 class="mb-3">
-                        <img src="{{ asset('build/images/phone_icon.png') }}" alt="phone" width="25" height="25">
-                        {{ salon.phoneNumber }}
-                    </h6>
-                    <div>
-                        <img src="{{ asset('build/images/info_icon.png') }}" alt="info" width="25" height="25">
-                        {{ salon.description }}
+                <div class=" d-flex justify-content-evenly">
+                    <div class="p-3">
+                        <img src="{{ asset('build/images/uploads/' ~ salon.imagePath) }}" alt="salon photo" width="300" height="300">
+                        <div class="mt-3 ms-1">
+                            <h5>
+                                <img src="{{ asset('build/images/working_hours_icon.png') }}" alt="hours" width="25" height="25">
+                                Open hours:
+                            </h5>
+                            <ul style="list-style: none">
+                                {% for work_hour in salon.salonWorkingHours %}
+                                    <li><span>{{ work_hour.day == 1 ? 'Mon' : work_hour.day == 2 ? 'Tue' : work_hour.day == 3 ? 'Wed' : work_hour.day == 4 ? 'Thu' : work_hour.day == 5 ? 'Fri' }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
-                    <br>
-                    <div>
-                        <h5><img src="{{ asset('build/images/scissor_icon.png') }}" alt="scissor" width="25" height="25">
-                        HairSalon Services:</h5>
-                        <ul style="list-style: none">
-                            {% for service in salon.salonServices %}
-                                <li>{{ service.name }} - ${{ service.price }}</li>
-                            {% endfor %}
-                        </ul>
+                    <div class="ps-3 pt-3">
+                        <h6 class="my-3">
+                            <img src="{{ asset('build/images/location_icon.png') }}" alt="location" width="25" height="25">
+                            {{ salon.city }}, {{ salon.address }}
+                        </h6>
+                        <h6 class="mb-3">
+                            <img src="{{ asset('build/images/phone_icon.png') }}" alt="phone" width="25" height="25">
+                            {{ salon.phoneNumber }}
+                        </h6>
+                        <div>
+                            <img src="{{ asset('build/images/info_icon.png') }}" alt="info" width="25" height="25">
+                            {{ salon.description }}
+                        </div>
+                        <br>
+                        <div>
+                            <h5><img src="{{ asset('build/images/scissor_icon.png') }}" alt="scissor" width="25" height="25">
+                                HairSalon Services:</h5>
+                            <ul style="list-style: none">
+                                {% for service in salon.salonServices %}
+                                    <li>{{ service.name }} - ${{ service.price }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <br>
+                        <button class="btn mt-5 blue-button" >Make an appointment</button>
+                        <br>
+                        <br>
                     </div>
-                    <br>
-                    <button class="btn mt-5 blue-button" >Make an appointment</button>
-                    <br>
-                    <br>
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 {% endblock %}

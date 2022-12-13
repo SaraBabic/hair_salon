@@ -287,6 +287,13 @@ h1 {
     text-decoration: none;
     color: #fff;
 }
+.salon-card {
+    background-color: rgba(255,255,255,0.7);
+}
+.one-salon-card {
+    background-color: rgba(255,255,255,0.8);
+    padding: 30px;
+}
 @media only screen and (max-width: 990px){
     .footer-image {
         display: none;
