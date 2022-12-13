@@ -42,6 +42,9 @@ body {
 .transparent-header img {
     filter: invert(1);
 }
+.transparent-header .dropdown-item{
+    color: #000 !important;
+}
 .colored-header {
     background-color: #75BBBF;
 }
