@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Salon;
+use App\Repository\SalonRatingRepository;
 use App\Repository\SalonRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,12 +23,14 @@ class SalonController extends AbstractController
     }
 
     #[Route('/salon/{id}/show', name:'app_salon_by_id')]
-    public function salonById(SalonRepository $repository, int $id):Response
+    public function salonById(SalonRepository $repository, SalonRatingRepository $ratingRepository, int $id):Response
     {
         $salon = $repository->findOneBy(['id'=>$id]);
+        $salonRating = $ratingRepository->findAverageRatingForSalon($id);
 
         return $this->render('salon/oneSalon.html.twig',[
-            'salon'=>$salon
+            'salon'=>$salon,
+            'rating' => $salonRating[0]
         ]);
     }
 }

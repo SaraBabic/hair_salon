@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use App\Repository\SalonRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(SalonRepository $salonRepository): Response
     {
-        return $this->render('home/home.html.twig');
+        $salons = $salonRepository->findFiveBestRatedSalons();
+
+        return $this->render('home/home.html.twig',[
+            'salons' => $salons
+        ]);
     }
 
 }

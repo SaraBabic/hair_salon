@@ -13,6 +13,21 @@
                 </div>
                 <div class="ps-3 pt-2">
                     <h2>{{ salon.getName }}</h2>
+                    <div class="d-flex mb-3">
+                        {% set ratings = 0 %}
+                        {% for rate in salon.salonRatings %}
+                            {% set ratings = ratings + rate.rate %}
+                        {% endfor %}
+                        {% set rate = ratings/salon.salonRatings.count | slice(0,3) %}
+                        {% set rate = rate | round(0, 'floor') %}
+                        {% set missing_rate = 5 - rate %}
+                        {% for i in 1..rate  %}
+                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="15" height="15">
+                        {% endfor %}
+                        {% for i in 1..missing_rate  %}
+                            <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="15" height="15">
+                        {% endfor %}
+                    </div>
                     <h5>
                         <img src="{{ asset('build/images/location_icon.png') }}" alt="location" width="20" height="20">
                         {{ salon.city }}

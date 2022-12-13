@@ -14,7 +14,7 @@ class SalonRating
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'salon')]
+    #[ORM\ManyToOne(inversedBy: 'rating')]
     private ?Salon $salon = null;
 
     #[ORM\ManyToOne(inversedBy: 'salonRatings')]

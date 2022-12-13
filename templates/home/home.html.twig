@@ -25,6 +25,29 @@
             <h1>Highest Rated Hair Salons</h1>
             <img src="{{ asset('build/images/stars.png') }}" alt="stars">
         </div>
+        <div>
+        {% set len = salons|length - 1 %}
+        {% for i in 0..len %}
+            <div class="card shadow w-50 mx-auto my-3">
+                <a href="{{ path('app_salon_by_id', {'id': salons[i].id}) }}" class="text-decoration-none text-black d-block">
+                <img src="{{ asset('build/images/uploads/' ~ salons[i].imagePath) }}" class="card-img-top" alt="salon image" width="250" height="250">
+                <div class="card-body">
+                    <h5 class="card-title">{{ salons[i].name }}</h5>
+                    <p class="card-text">
+                         {% set rate = salons[i].rate | round(0,'floor') %}
+                        {% set missing_rate = 5 -  rate %}
+                        {% for i in 1..rate %}
+                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                        {% endfor %}
+                        {% for i in 1..missing_rate %}
+                            <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
+                        {% endfor %}
+                    </p>
+                </div>
+                </a>
+            </div>
+        {% endfor %}
+        </div>
     </div>
 
 

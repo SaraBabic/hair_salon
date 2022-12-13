@@ -39,20 +39,16 @@ class SalonRatingRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return SalonRating[] Returns an array of SalonRating objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAverageRatingForSalon($salonID)
+    {
+        return $this->createQueryBuilder('s')
+            ->select('AVG(s.rate) as avg_rate')
+            ->andWhere('s.salon = :val')
+            ->setParameter('val', $salonID)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?SalonRating
 //    {
