@@ -40,13 +40,11 @@ class SalonRepository extends ServiceEntityRepository
     }
 
 
-//    public function findOneBySomeField($value): ?Salon
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findFiveBestRatedSalons()
+    {
+        $sql = " SELECT s.id, s.name, s.imagePath, (SELECT AVG(sr.rate) FROM App\Entity\SalonRating sr WHERE sr.salon = s.id ) AS rate 
+                    FROM App\Entity\Salon s ORDER BY rate DESC";
+
+        return $this->getEntityManager()->createQuery($sql)->setMaxResults(5)->getResult();
+    }
 }
