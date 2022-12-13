@@ -20,8 +20,24 @@ body {
     background: #111;
 }
 .header, .btn {
-    background-color: #75BBBF;
+    position: fixed;
+    width: 100%;
     /*background: linear-gradient(to bottom, rgb(117, 187, 191, 1), rgb(117, 187, 191, 0.4));*/
+}
+.transparent-header {
+    background-color: transparent;
+}
+.transparent-header .navbar-links li a {
+    color: #ffffff;
+}
+.transparent-header h2{
+    color: #ffffff;
+}
+.transparent-header img {
+    filter: invert(1);
+}
+.colored-header {
+    background-color: #75BBBF;
 }
 .btn:hover{
     background-color: #417475;
@@ -119,6 +135,7 @@ footer h5 {
     height: 600px;
 }
 .banner {
+    z-index: -1;
     position: relative;
     height: 600px;
     margin-bottom: 60px;

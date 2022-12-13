@@ -17,7 +17,7 @@
         {% endblock %}
     </head>
     <body>
-    <nav class="navbar navbar-expand-lg header">
+    <nav class="navbar navbar-expand-lg header transparent-header">
         <div class="container-fluid">
             {% if app.user %}
                 {% if 'ROLE_SALON_OWNER' in app.user.roles %}
@@ -128,6 +128,7 @@
     </footer>
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
+        {{ encore_entry_script_tags('header') }}
     {% endblock %}
     </body>
 </html>
