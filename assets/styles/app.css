@@ -22,7 +22,7 @@ body {
 .header, .btn {
     position: fixed;
     width: 100%;
-    /*background: linear-gradient(to bottom, rgb(117, 187, 191, 1), rgb(117, 187, 191, 0.4));*/
+    z-index: 10;
 }
 .transparent-header {
     background-color: transparent;

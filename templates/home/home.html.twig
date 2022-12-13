@@ -66,20 +66,12 @@
     </div>
 {% endblock %}
 
-<<<<<<< HEAD
-
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('header') }}
-=======
-{% block javascripts %}
-    {{ parent() }}
     <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
         });
     </script>
->>>>>>> 2715a1e501346712f6a533e3f7f7fa1579551142
 {% endblock %}
