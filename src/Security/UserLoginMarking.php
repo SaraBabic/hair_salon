@@ -4,7 +4,7 @@ namespace App\Security;
 
 use App\Entity\Logs;
 use Doctrine\ORM\EntityManagerInterface;
-use Mobile_Detect;
+use Detection\MobileDetect;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -50,8 +50,7 @@ class UserLoginMarking
     private function getDeviceType():string
     {
         //TODO remove message from this class
-        require_once 'MobileDetect/Mobile_Detect.php';
-        $detect = new Mobile_Detect();
+        $detect = new MobileDetect();
         $device = 'computer';
         if ($detect->isMobile()) {
             $device = 'mobile';
