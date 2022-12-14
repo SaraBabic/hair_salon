@@ -233,7 +233,7 @@ h1 {
     background: linear-gradient( rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)) ,url("../images/login_bg.jpg") center no-repeat ;
     background-size: cover;
     color: white;
-    height: 79vh;
+    height: 100vh;
 }
 .searchCity{
     padding: 20px;
@@ -247,7 +247,7 @@ h1 {
 .plant-bg {
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.65)) ,url("../images/owner_bg.jpg") center no-repeat ;
     background-size: cover;
-    height: 90vh;
+    height: 100vh;
     padding: 100px 0;
 }
 .plant-height {
