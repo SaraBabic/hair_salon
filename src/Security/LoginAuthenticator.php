@@ -48,6 +48,9 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         if (in_array('ROLE_SALON_OWNER', $user->getRoles(), true)) {
             return new RedirectResponse($this->urlGenerator->generate('app_owner_dashboard', ['id'=> $user->getId(), 'salon_id' => $user->getSalon()]));
         }
+        if(in_array('ROLE_ADMIN', $user->getRoles(), true)){
+            return new RedirectResponse($this->urlGenerator->generate('sonata_admin_dashboard'));
+        }
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }

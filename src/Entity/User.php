@@ -69,6 +69,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->logs = new ArrayCollection();
     }
 
+    public function __toString():string
+    {
+        return $this->lastName . ' ' . $this->firstName;
+    }
 
     public function getId(): ?int
     {
@@ -112,6 +116,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getRolesAsString()
+    {
+        return implode(',', $this->roles);
+    }
+
+    public function setRolesAsString(?string $roles = ''):self
+    {
+        $this->roles = explode(',', $roles);
 
         return $this;
     }

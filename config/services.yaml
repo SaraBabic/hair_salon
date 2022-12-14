@@ -24,3 +24,17 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    admin.user:
+        class: App\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\User, manager_type: orm, label: Users }
+
+    admin.log:
+        class: App\Admin\LogsAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Logs, manager_type: orm, label: User Logs }
+
+    admin.salon:
+        class: App\Admin\SalonAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Salon, manager_type: orm, label: Salons }

@@ -26,6 +26,11 @@ class SalonWorkingHours
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $closingAt = null;
 
+    public function __toString():string
+    {
+        return $this->day . ': ' . $this->openingAt . ' - ' . $this->closingAt;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
