@@ -7,6 +7,7 @@ use App\Entity\SalonServices;
 use App\Entity\User;
 use App\Form\SalonForm;
 use App\Form\ServiceCreateForm;
+use App\Form\WorkingHoursForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\SalonWorkingHours;
 
 class OwnerController extends AbstractController {
     //owner dashboard
@@ -95,6 +97,7 @@ class OwnerController extends AbstractController {
             'salon_services' => $services,
         ]);
     }
+    //Delete Service
     #[Route('/owner/{id}/salon/{salon_id}/services/{service_id}/delete', name: 'delete_service', methods: ['GET'])]
     public function delete($service_id, ManagerRegistry $doctrine, EntityManagerInterface $entityManager, $id): Response
     {
@@ -114,6 +117,68 @@ class OwnerController extends AbstractController {
         return $this->redirectToRoute('app_salon_services', [
             'id' => $id,
             'salon_id' => $salon->getId(),
+        ]);
+    }
+    //Custom working hours
+    #[Route('/owner/{id}/salon/{salon_id}/working_hours', name: 'app_owner_working_hours')]
+    public function working_hours(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em):Response {
+
+        $userRepository = $doctrine->getRepository(User::class);
+        /** @var User $user */
+        $user = $userRepository->find($id);
+        $salon = $user->getSalon();
+
+        $form = $this->createForm(WorkingHoursForm::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $entityData = [];
+            $entityData[0] = [
+                'opening_at' => $data['mondayFrom'],
+                'closing_at' => $data['mondayTo']
+            ];
+            $entityData[1] = [
+                'opening_at' => $data['tuesdayFrom'],
+                'closing_at' => $data['tuesdayTo']
+            ];
+            $entityData[2] = [
+                'opening_at' => $data['wednesdayFrom'],
+                'closing_at' => $data['wednesdayTo']
+            ];
+            $entityData[3] = [
+                'opening_at' => $data['thursdayFrom'],
+                'closing_at' => $data['thursdayTo']
+            ];
+            $entityData[4] = [
+                'opening_at' => $data['fridayFrom'],
+                'closing_at' => $data['fridayTo']
+            ];
+            $entityData[5] = [
+                'opening_at' => $data['saturdayFrom'],
+                'closing_at' => $data['saturdayTo']
+            ];
+            $entityData[6] = [
+                'opening_at' => $data['sundayFrom'],
+                'closing_at' => $data['sundayTo']
+            ];
+            foreach ($entityData as $index => $workingHours) {
+                $wh = new SalonWorkingHours();
+                $wh->setSalon($salon);
+                $wh->setOpeningAt($workingHours['opening_at']);
+                $wh->setClosingAt($workingHours['closing_at']);
+                $wh->setDay($index+1);
+                $em->persist($wh);
+            }
+
+            $em->flush();
+
+            $this->addFlash('success', 'Your data is successfully saved!');
+        }
+
+        return $this->render('owner/working_hours.html.twig', [
+            'salon' => $salon,
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 }

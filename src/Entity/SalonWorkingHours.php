@@ -20,11 +20,11 @@ class SalonWorkingHours
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $day = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $openingAt = null;
+    #[ORM\Column(type: Types::STRING)]
+    private $openingAt = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $closingAt = null;
+    #[ORM\Column(type: Types::STRING)]
+    private $closingAt = null;
 
     public function __toString():string
     {
@@ -60,24 +60,24 @@ class SalonWorkingHours
         return $this;
     }
 
-    public function getOpeningAt(): ?\DateTimeInterface
+    public function getOpeningAt()
     {
         return $this->openingAt;
     }
 
-    public function setOpeningAt(\DateTimeInterface $openingAt): self
+    public function setOpeningAt($openingAt): self
     {
         $this->openingAt = $openingAt;
 
         return $this;
     }
 
-    public function getClosingAt(): ?\DateTimeInterface
+    public function getClosingAt()
     {
         return $this->closingAt;
     }
 
-    public function setClosingAt(\DateTimeInterface $closingAt): self
+    public function setClosingAt($closingAt): self
     {
         $this->closingAt = $closingAt;
 
