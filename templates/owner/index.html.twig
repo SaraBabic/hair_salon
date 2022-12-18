@@ -9,6 +9,8 @@
             <a class="nav-link" href="{{ path('app_salon_services', {id: user.id, salon_id: salon.id }) }}">Salon services</a>
 
             <a class="nav-link" href="{{ path('app_owner_salon_show', {id: user.id, salon_id: salon.id }) }}">My salon</a>
+
+            <a class="nav-link" href="{{ path('app_owner_working_hours',{id: user.id, salon_id: salon.id }) }}">Salon working hours</a>
         </div>
     </div>
 {% endblock %}

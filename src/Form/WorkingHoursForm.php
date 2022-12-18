@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Salon;
+use PhpParser\Node\Stmt\Label;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,7 +15,7 @@ class WorkingHoursForm extends AbstractType {
     {
         $builder
             ->add('mondayFrom', TextType::class, [
-                'attr'=>['class'=>'form-control'],
+                'attr'=>['class'=>'form-control monday'],
                 'label' => 'Monday from',
                 'constraints' => [
                     new NotBlank([
