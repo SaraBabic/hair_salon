@@ -305,6 +305,11 @@ h1 {
 h3 {
     text-align: center;
 }
+.alert {
+    position: absolute;
+    width: 100%;
+    top: 60px;
+}
 @media only screen and (max-width: 990px){
     .footer-image {
         display: none;

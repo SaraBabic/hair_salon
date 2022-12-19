@@ -58,7 +58,7 @@
                                 HairSalon Services:</h5>
                             <ul style="list-style: none">
                                 {% for service in salon.salonServices %}
-                                    <li>{{ service.name }} - ${{ service.price }}</li>
+                                    <li>{{ service.name }} - {{ service.price }} din</li>
                                 {% endfor %}
                             </ul>
                         </div>
