@@ -52,6 +52,7 @@ class SalonRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->select('s.city')
+            ->where('s.isActive = 1')
             ->groupBy('s.city')
             ->getQuery()
             ->getResult()
