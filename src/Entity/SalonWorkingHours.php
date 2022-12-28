@@ -72,6 +72,12 @@ class SalonWorkingHours
         if($this->day == 5){
             return "Fri";
         }
+        if($this->day == 6){
+            return "Sat";
+        }
+        if($this->day == 7){
+            return "Sun";
+        }
         return null;
     }
 
