@@ -27,29 +27,36 @@ services:
     admin.user:
         class: App\Admin\UserAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\User, manager_type: orm, label: Users }
+            - { name: sonata.admin, model_class: App\Entity\User, manager_type: orm, group: 'User', label: Users }
 
     admin.log:
         class: App\Admin\LogsAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Logs, manager_type: orm, label: User Logs }
+            - { name: sonata.admin, model_class: App\Entity\Logs, manager_type: orm, group: 'User', label: User Logs }
 
     admin.salon:
         class: App\Admin\SalonAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Salon, manager_type: orm, label: Salons }
+            - { name: sonata.admin, model_class: App\Entity\Salon, manager_type: orm, group: 'Salon', label: Salons }
 
     admin.salon_services:
         class: App\Admin\SalonServicesAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\SalonServices, manager_type: orm, label: Services }
+            - { name: sonata.admin, model_class: App\Entity\SalonServices, manager_type: orm, group: 'Salon', label: Services }
 
     admin.salon_working_hours:
         class: App\Admin\SalonWorkingHoursAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\SalonWorkingHours, manager_type: orm, label: Working Hours }
+            - { name: sonata.admin, model_class: App\Entity\SalonWorkingHours, manager_type: orm, group: 'Salon', label: Working Hours }
 
     admin.hairdresser:
         class: App\Admin\HairdresserAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\HairdresserDetails, manager_type: orm, label: Hairdressers }
+            - { name: sonata.admin, model_class: App\Entity\HairdresserDetails, manager_type: orm, group: 'Salon', label: Hairdressers }
+
+    App\EventListener\SalonActivationFromAdmin:
+        tags:
+            -
+                name: 'doctrine.orm.entity_listener'
+                event: 'preUpdate'
+                entity: 'App\Entity\Salon'
