@@ -26,11 +26,6 @@ class SalonWorkingHours
     #[ORM\Column(type: Types::STRING)]
     private $closingAt = null;
 
-    public function __toString():string
-    {
-        return $this->day . ': ' . $this->openingAt . ' - ' . $this->closingAt;
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +53,31 @@ class SalonWorkingHours
         $this->day = $day;
 
         return $this;
+    }
+
+    public function getDayName(): ?string
+    {
+        if($this->day == 1){
+            return "Mon";
+        }
+        if($this->day == 2){
+            return "Tue";
+        }
+        if($this->day == 3){
+            return "Wed";
+        }
+        if($this->day == 4){
+            return "Thu";
+        }
+        if($this->day == 5){
+            return "Fri";
+        }
+        return null;
+    }
+
+    public function getTotalWorkingHours():string
+    {
+        return  $this->openingAt . ' - ' . $this->closingAt;
     }
 
     public function getOpeningAt()

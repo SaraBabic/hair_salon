@@ -38,3 +38,18 @@ services:
         class: App\Admin\SalonAdmin
         tags:
             - { name: sonata.admin, model_class: App\Entity\Salon, manager_type: orm, label: Salons }
+
+    admin.salon_services:
+        class: App\Admin\SalonServicesAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\SalonServices, manager_type: orm, label: Services }
+
+    admin.salon_working_hours:
+        class: App\Admin\SalonWorkingHoursAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\SalonWorkingHours, manager_type: orm, label: Working Hours }
+
+    admin.hairdresser:
+        class: App\Admin\HairdresserAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\HairdresserDetails, manager_type: orm, label: Hairdressers }

@@ -49,11 +49,15 @@ class Salon
     #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonServices::class)]
     private Collection $salonServices;
 
+    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: HairdresserDetails::class)]
+    private Collection $hairdresser;
+
     public function __construct()
     {
         $this->rating = new ArrayCollection();
         $this->salonWorkingHours = new ArrayCollection();
         $this->salonServices = new ArrayCollection();
+        $this->hairdresser = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -246,6 +250,36 @@ class Salon
             // set the owning side to null (unless already changed)
             if ($salonService->getSalon() === $this) {
                 $salonService->setSalon(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HairdresserDetails>
+     */
+    public function getHairdresser(): Collection
+    {
+        return $this->hairdresser;
+    }
+
+    public function addHairdresser(HairdresserDetails $hairdresser): self
+    {
+        if (!$this->hairdresser->contains($hairdresser)) {
+            $this->hairdresser->add($hairdresser);
+            $hairdresser->setSalon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHairdresser(HairdresserDetails $hairdresser): self
+    {
+        if ($this->hairdresser->removeElement($hairdresser)) {
+            // set the owning side to null (unless already changed)
+            if ($hairdresser->getSalon() === $this) {
+                $hairdresser->setSalon(null);
             }
         }
 

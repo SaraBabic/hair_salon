@@ -19,7 +19,8 @@ class UserAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
             ->add('lastName', TextType::class)
             ->add('phoneNumber', TextType::class)
             ->add('rolesAsString', TextType::class, [
-                'required' => false
+                'required' => false,
+                'help' => 'write roles like: ROLE_x, ROLE_y...'
             ])
         ;
     }

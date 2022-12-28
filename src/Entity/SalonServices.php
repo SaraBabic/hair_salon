@@ -36,11 +36,6 @@ class SalonServices
         $this->reservationSalonServices = new ArrayCollection();
     }
 
-    public function __toString():string
-    {
-        return $this->name . ': ' . $this->duration . ' mins, ' . $this->price .' RSD';
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -80,6 +75,11 @@ class SalonServices
         $this->duration = $duration;
 
         return $this;
+    }
+
+    public function getServiceTimeAndPrice():string
+    {
+        return $this->duration . ' mins, ' . $this->price .' €';
     }
 
     public function getSalon(): ?Salon

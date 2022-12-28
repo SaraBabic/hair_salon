@@ -17,14 +17,14 @@ class HairdresserDetails
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Salon $salon = null;
-
     #[ORM\Column(type: Types::TEXT)]
     private ?string $biography = null;
 
     #[ORM\Column]
     private ?bool $isActive = null;
+
+    #[ORM\ManyToOne(inversedBy: 'hairdresser')]
+    private ?Salon $salon = null;
 
     public function getId(): ?int
     {
@@ -39,18 +39,6 @@ class HairdresserDetails
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getSalon(): ?Salon
-    {
-        return $this->salon;
-    }
-
-    public function setSalon(?Salon $salon): self
-    {
-        $this->salon = $salon;
 
         return $this;
     }
@@ -75,6 +63,18 @@ class HairdresserDetails
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getSalon(): ?Salon
+    {
+        return $this->salon;
+    }
+
+    public function setSalon(?Salon $salon): self
+    {
+        $this->salon = $salon;
 
         return $this;
     }

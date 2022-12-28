@@ -2,13 +2,12 @@
 
 namespace App\Admin;
 
-use App\Entity\SalonServices;
-use App\Entity\SalonWorkingHours;
 use App\Entity\User;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\Form\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,6 +23,15 @@ class SalonAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
             ->add('description', TextareaType::class)
             ->add('imagePath', TextType::class)
             ->add('isActive')
+            ->end()
+            ->with('List of Services')
+            ->add('salonServices', CollectionType::class, ['by_reference'=>false], ['edit'=>'inline'])
+            ->end()
+            ->with('Working hours')
+            ->add('salonWorkingHours', CollectionType::class, ['by_reference'=>false], ['edit'=>'inline'] )
+            ->end()
+            ->with('Hairdressers')
+            ->add('hairdresser', CollectionType::class, ['by_reference'=>false], ['edit'=>'inline'])
         ;
     }
 
@@ -41,7 +49,6 @@ class SalonAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
             ->addIdentifier('isActive')
             ->addIdentifier('address')
             ->addIdentifier('city')
-            ->addIdentifier('imagePath') //TODO show image
             ->addIdentifier('owner',EntityType::class, ['class' => User::class])
         ;
     }
@@ -53,9 +60,22 @@ class SalonAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
             ->add('address')
             ->add('city')
             ->add('owner',EntityType::class, [ 'class' => User::class])
-          //  ->add('salonServices', EntityType::class, ['class' => SalonServices::class])
-          //  ->add('salonWorkingHours', EntityType::class, ['class' => SalonWorkingHours::class])
-            //TODO how to show services and working hours
+            ->add('imagePath')
+            ->end()
+            ->with('List of Services')
+            ->add('salonServices', null, [
+                'template' => 'admin/salonServices.html.twig',
+                ])
+            ->end()
+            ->with('Working hours')
+            ->add('salonWorkingHours', null, [
+                'template' => 'admin/salonWorkingHours.html.twig',
+            ])
+            ->end()
+            ->with('Hairdressers')
+            ->add('hairdresser', null, [
+                'template' => 'admin/hairdressers.html.twig',
+            ])
         ;
     }
 }

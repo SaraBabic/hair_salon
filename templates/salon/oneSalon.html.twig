@@ -34,7 +34,7 @@
                             </h5>
                             <ul style="list-style: none">
                                 {% for work_hour in salon.salonWorkingHours %}
-                                    <li><span>{{ work_hour.day == 1 ? 'Mon' : work_hour.day == 2 ? 'Tue' : work_hour.day == 3 ? 'Wed' : work_hour.day == 4 ? 'Thu' : work_hour.day == 5 ? 'Fri' }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
+                                    <li><span>{{ work_hour.dayName }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -58,7 +58,7 @@
                                 HairSalon Services:</h5>
                             <ul style="list-style: none">
                                 {% for service in salon.salonServices %}
-                                    <li>{{ service.name }} - {{ service.price }} din</li>
+                                    <li>{{ service.name }} - {{ service.price }} €</li>
                                 {% endfor %}
                             </ul>
                         </div>

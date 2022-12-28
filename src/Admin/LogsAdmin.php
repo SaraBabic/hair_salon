@@ -6,6 +6,7 @@ use App\Entity\User;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -23,6 +24,7 @@ class LogsAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
             ->add('country')
             ->add('region')
             ->add('provider')
+            ->add('createdAt')
         ;
     }
 
@@ -35,7 +37,9 @@ class LogsAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
             ->addIdentifier('continent')
             ->addIdentifier('country')
             ->addIdentifier('region')
-            ->addIdentifier('provider');
+            ->addIdentifier('provider')
+            ->addIdentifier('createdAt')
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -47,6 +51,13 @@ class LogsAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
             ->add('continent')
             ->add('country')
             ->add('region')
-            ->add('provider');
+            ->add('provider')
+            ->add('createdAt')
+        ;
+    }
+
+    protected function configureRoutes(RouteCollection|\Sonata\AdminBundle\Route\RouteCollectionInterface $collection):void
+    {
+        $collection->clearExcept(array('list', 'show'));
     }
 }

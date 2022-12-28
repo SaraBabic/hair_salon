@@ -1,0 +1,14 @@
+{% block field %}
+    {% if object.salonServices is not empty %}
+        <table class="table">
+            {% for s in object.salonServices %}
+                <tr>
+                    <th>{{ s.name }}</th>
+                    <td>{{ s.serviceTimeAndPrice }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p style="padding-left: 25px;">No data.</p>
+    {% endif %}
+{% endblock %}
