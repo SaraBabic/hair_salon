@@ -15,6 +15,7 @@ class UserAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
     {
         $form->add('email', EmailType::class)
             ->add('isVerified')
+            ->add('isBanned')
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('phoneNumber', TextType::class)
@@ -29,6 +30,7 @@ class UserAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
     {
         $datagrid->add('email')
             ->add('isVerified')
+            ->add('isBanned')
             ->add('firstName')
             ->add('lastName')
         ;
@@ -38,6 +40,7 @@ class UserAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
     {
         $list->addIdentifier('email')
             ->addIdentifier('isVerified')
+            ->add('isBanned')
             ->addIdentifier('firstName')
             ->addIdentifier('lastName')
         ;
@@ -47,6 +50,7 @@ class UserAdmin extends \Sonata\AdminBundle\Admin\AbstractAdmin
     {
         $show->add('email')
             ->add('isVerified')
+            ->add('isBanned')
             ->add('firstName')
             ->add('lastName')
             ->add('phoneNumber')

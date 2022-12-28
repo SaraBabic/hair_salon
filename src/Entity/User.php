@@ -61,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Logs::class)]
     private Collection $logs;
 
+    #[ORM\Column]
+    private ?bool $isBanned = false;
+
     public function __construct()
     {
         $this->salonRatings = new ArrayCollection();
@@ -342,6 +345,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $log->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(bool $isBanned): self
+    {
+        $this->isBanned = $isBanned;
 
         return $this;
     }

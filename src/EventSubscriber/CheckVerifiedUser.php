@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Entity\User;
+use App\Security\AccountBannedAuthenticationException;
 use App\Security\AccountNotVerifiedAuthenticationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
@@ -30,7 +31,10 @@ class CheckVerifiedUser implements \Symfony\Component\EventDispatcher\EventSubsc
             throw new \Exception('Unexpected user type');
         }
         if (!$user->isVerified()) {
-            throw new AccountNotVerifiedAuthenticationException();
+            throw new AccountNotVerifiedAuthenticationException("Account not verified.", 0);
+        }
+        if($user->isIsBanned()){
+            throw new AccountBannedAuthenticationException("Your account is banned by admin.", 0);
         }
     }
 

@@ -1,1 +1,3 @@
 "Invalid credentials." : "Incorrect email or password."
+"Bad credentials." : "Incorrect email."
+"The presented password is invalid." : "Incorrect password."
