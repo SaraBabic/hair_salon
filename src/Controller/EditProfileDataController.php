@@ -35,6 +35,7 @@ class EditProfileDataController extends \Symfony\Bundle\FrameworkBundle\Controll
     #[Route('/change_password', name: 'app_change_password')]
     public function changePassword(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher):Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordForm::class);
         $form->handleRequest($request);

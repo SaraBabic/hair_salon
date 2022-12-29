@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
 
 {% block title %}User profile{% endblock %}
 
 {% block body %}
 <div class="plant-bg">
-    <div class="w-50 mx-auto pt-4">
-        <h3>Profile info</h3>
+    <div class="w-50 mx-auto pt-4 text-light">
+        <h3 class="mb-4">Profile info</h3>
         {{ form_start(form)}}
         {{ form_widget(form) }}
         <br>
