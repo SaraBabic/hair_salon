@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Salon;
+use App\Entity\SalonWorkingHours;
 use PhpParser\Node\Stmt\Label;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,10 +14,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class WorkingHoursForm extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $defaultData = [];
+        /** @var SalonWorkingHours $dayHours */
+        foreach ($options['hours'] as $dayHours) {
+            $defaultData[$dayHours->getDay()] = [
+                'from' => $dayHours->getOpeningAt(),
+                'to' => $dayHours->getClosingAt(),
+            ];
+        }
+
         $builder
             ->add('mondayFrom', TextType::class, [
                 'attr'=>['class'=>'form-control monday'],
                 'label' => 'Monday from',
+                'data' => $defaultData[1]['from'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Start at',
@@ -26,6 +37,7 @@ class WorkingHoursForm extends AbstractType {
             ->add('mondayTo', TextType::class, [
                 'attr'=>['class'=>'form-control'],
                 'label' => 'Monday to',
+                'data' => $defaultData[1]['to'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Close at',
@@ -35,6 +47,7 @@ class WorkingHoursForm extends AbstractType {
             ->add('tuesdayFrom', TextType::class, [
                 'attr'=>['class'=>'form-control'],
                 'label' => 'Tuesday from',
+                'data' => $defaultData[2]['from'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Start at',
@@ -43,6 +56,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('tuesdayTo', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[2]['to'],
                 'label' => 'Tuesday to',
                 'constraints' => [
                     new NotBlank([
@@ -52,6 +66,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('wednesdayFrom', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[3]['from'],
                 'label' => 'Wednesday from',
                 'constraints' => [
                     new NotBlank([
@@ -61,6 +76,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('wednesdayTo', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[3]['to'],
                 'label' => 'Wednesday to',
                 'constraints' => [
                     new NotBlank([
@@ -70,6 +86,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('thursdayFrom', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[4]['from'],
                 'label' => 'Thursday from',
                 'constraints' => [
                     new NotBlank([
@@ -79,6 +96,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('thursdayTo', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[4]['to'],
                 'label' => 'Thursday to',
                 'constraints' => [
                     new NotBlank([
@@ -88,6 +106,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('fridayFrom', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[5]['from'],
                 'label' => 'Friday from',
                 'constraints' => [
                     new NotBlank([
@@ -97,6 +116,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('fridayTo', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[5]['to'],
                 'label' => 'Friday to',
                 'constraints' => [
                     new NotBlank([
@@ -106,6 +126,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('saturdayFrom', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[6]['from'],
                 'label' => 'Saturday from',
                 'constraints' => [
                     new NotBlank([
@@ -115,6 +136,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('saturdayTo', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[6]['to'],
                 'label' => 'Saturday to',
                 'constraints' => [
                     new NotBlank([
@@ -124,6 +146,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('sundayFrom', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[7]['from'],
                 'label' => 'Sunday from',
                 'constraints' => [
                     new NotBlank([
@@ -133,6 +156,7 @@ class WorkingHoursForm extends AbstractType {
             ])
             ->add('sundayTo', TextType::class, [
                 'attr'=>['class'=>'form-control'],
+                'data' => $defaultData[7]['to'],
                 'label' => 'Sunday to',
                 'constraints' => [
                     new NotBlank([
@@ -140,5 +164,13 @@ class WorkingHoursForm extends AbstractType {
                     ])
                 ],
             ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            //'data_class' => SalonWorkingHours::class,
+            'hours' => null
+        ]);
     }
 }

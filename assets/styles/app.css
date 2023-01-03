@@ -258,6 +258,11 @@ h1 {
     font-size: 60px;
 }
 .owner-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
     color: #fff;
     font-size: 30px;
     text-align: center;
@@ -296,11 +301,17 @@ h1 {
 }
 .working-hours-form {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 }
 .working-hours-form div {
+    display: flex;
+    flex-wrap: wrap;
     width: 50%;
-    padding: 10px;
+    padding: 2px 10px;
+}
+.working-hours-form button {
+    width: 50%;
 }
 h3 {
     text-align: center;
@@ -310,6 +321,11 @@ h3 {
     width: 100%;
     top: 60px;
 }
+
+textarea {
+    height: 200px;
+}
+
 @media only screen and (max-width: 990px){
     .footer-image {
         display: none;

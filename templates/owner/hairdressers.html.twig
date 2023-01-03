@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Salon owner dashboard{% endblock %}
+
+{% block body %}
+    <div class="plant-bg salon">
+        <div class="w-50 m-auto">
+            <h1>{{ salon.name }}</h1>
+
+            {% if number_of_hairdressers %}
+
+            <h2>My hairdressers</h2>
+            <table class="table table-hover services-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Biography</th>
+                    <th>Phone number</th>
+                    <th>Is active</th>
+                    <th>Deactivate / Activate Hairdresser</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for hairdresser in hairdressers %}
+                    <tr>
+                        <td>{{ hairdresser.user }}</td>
+                        <td>{{ hairdresser.biography }}</td>
+                        <td>{{ hairdresser.user.phonenumber }}</td>
+                        <td>{{ hairdresser.isactive?"Active":"Inactive" }}</td>
+                        <td><a
+                                href="{{ path('toggle_user_status', {id: user.id, salon_id: salon.id, hairdresser_id: hairdresser.id}) }}">
+                            <button type="reset" class="btn {{ hairdresser.isactive?"btn-danger":"btn-success" }}">
+                                {{ hairdresser.isactive?"Deactivate":"Activate" }}
+                            </button>
+                            </a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% else %}
+                <div>
+                    <h2>You don't have hairdressers yet.</h2>
+                </div>
+            {% endif %}
+
+            <a href="{{ path('app_owner_hairdressers_create', {id: user.id, salon_id: salon.id }) }}"><button type="submit" class="btn blue-button">Add hairdresser to your salon!</button></a>
+        </div>
+    </div>
+
+{% endblock %}
