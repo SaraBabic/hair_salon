@@ -12,14 +12,17 @@ use App\Form\ServiceCreateForm;
 use App\Form\WorkingHoursForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\SalonWorkingHours;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class OwnerController extends AbstractController {
     //owner dashboard
@@ -38,7 +41,7 @@ class OwnerController extends AbstractController {
 
     //Salon info
     #[Route('/owner/{id}/salon/{salon_id}/show', name: 'app_owner_salon_show')]
-    public function owner_salon(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em):Response {
+    public function owner_salon(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em, SluggerInterface $slugger):Response {
 
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
@@ -49,6 +52,25 @@ class OwnerController extends AbstractController {
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $salon = $form->getData();
+
+            //image upload
+            $imagePath = $form->get('salonImages')->getData();
+            if($imagePath) {
+                $originalFilename = pathinfo($imagePath->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imagePath->guessExtension();
+                try {
+                    $imagePath->move(
+                        $this->getParameter('uploads_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    var_dump($e->getMessage());
+                }
+                $salon->setImagePath($newFilename);
+            }
+
+
             $em->persist($salon);
             $em->flush();
 
@@ -236,7 +258,7 @@ class OwnerController extends AbstractController {
 
     // Create hairdresser.
     #[Route('/owner/{id}/salon/{salon_id}/hairdressers/create', name: 'app_owner_hairdressers_create')]
-    public function owner_create_hairdressers(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em):Response {
+    public function owner_create_hairdressers(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasher):Response {
 
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
@@ -254,7 +276,12 @@ class OwnerController extends AbstractController {
             $user->setFirstName($formData['firstName']);
             $user->setLastName($formData['lastName']);
             $user->setEmail($formData['email']);
-            $user->setPassword($formData['password']);
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $formData['password']
+                )
+            );
             $user->setRoles(["ROLE_HAIRDRESSER"]);
             $user->setIsVerified(true);
             $user->setPhoneNumber('Your phone number');

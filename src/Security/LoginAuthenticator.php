@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\HairdresserDetails;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,11 +47,16 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     {
         /** @var User $user */
         $user = $token->getUser();
+        /** @var HairdresserDetails $hairdresserDetails */
+        $hairdresserDetails = $token->getUser();
         if (in_array('ROLE_SALON_OWNER', $user->getRoles(), true)) {
             return new RedirectResponse($this->urlGenerator->generate('app_owner_dashboard', ['id'=> $user->getId(), 'salon_id' => $user->getSalon()]));
         }
         if(in_array('ROLE_ADMIN', $user->getRoles(), true)){
             return new RedirectResponse($this->urlGenerator->generate('sonata_admin_dashboard'));
+        }
+        if(in_array('ROLE_HAIRDRESSER', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_hairdresser_dashboard', ['id' => $hairdresserDetails->getId()]));
         }
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);

@@ -14,8 +14,10 @@
     </div>
     {% if app.user %}
         {% if 'ROLE_SALON_OWNER' in app.user.roles %}
-            <h1>Salon owner</h1>
+        <h1>Salon owner</h1>
 
+        {% elseif 'ROLE_HAIRDRESSER' in app.user.roles %}
+        <h1>Hairdresser</h1>
         {% endif %}
     {% endif %}
     <div class="w-50 mx-auto mb-5 text-center searchCity">

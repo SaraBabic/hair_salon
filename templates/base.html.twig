@@ -29,6 +29,13 @@
                             <h2 class="logo-text">HairSalons</h2>
                         </div>
                     </a>
+                {% elseif 'ROLE_HAIRDRESSER' in app.user.roles%}
+                    <a class="navbar-brand ms-4" href="{{ path('app_hairdresser_dashboard', {id: app.user.id}) }}">
+                        <div class="logo">
+                            <img src="{{ asset('build/images/logo.png') }}" alt="hair_salon_logo">
+                            <h2 class="logo-text">HairSalons</h2>
+                        </div>
+                    </a>
                 {% else %}
                     <a class="navbar-brand ms-4" href="{{ path('app_home') }}">
                         <div class="logo">
@@ -77,7 +84,6 @@
                             <ul class="dropdown-menu">
                                 {% for role in app.user.roles %}
                                     {% if role == 'ROLE_SALON_OWNER' %}
-                                        <li><a class="dropdown-item" href="#">My hairdressers</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                     {% endif %}
                                     {% if role == 'ROLE_USER' %}

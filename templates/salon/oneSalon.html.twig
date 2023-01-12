@@ -62,8 +62,17 @@
                                 {% endfor %}
                             </ul>
                         </div>
+                        <div>
+                            <h5><img src="{{ asset('build/images/hairdresser.png') }}" alt="scissor" width="25" height="25">
+                                Our hairdressers:</h5>
+                            <ul style="list-style: none">
+                                {% for hairdresser in hairdressers %}
+                                    <li>{{ hairdresser.user }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                         <br>
-                        <button class="btn mt-5 blue-button" >Make an appointment</button>
+                        <a href="{{ path('app_salon_reservation', {id: salon.id}) }}"><button class="btn mt-5 blue-button" >Make an appointment</button></a>
                         <br>
                         <br>
                     </div>

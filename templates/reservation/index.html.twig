@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Salon {{ salon.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="plant-bg plant-height">
+        <div class="container-fluid">
+            <div class="w-75 mx-auto my-5 one-salon-card">
+                <div class="mt-3 d-flex justify-content-between">
+                    <h2 class="ms-5">{{ salon.name }} - Reservation</h2>
+                    <div>
+                        {# <span>{{ rating.avg_rate | slice(0,3) }}</span>#}
+                        {% set rate =  0 %}
+                        {% if rating.avg_rate > 0 %}
+                            {% set rate = rating.avg_rate | round(0,'floor') %}
+                            {% for i in 1..rate %}
+                                <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                            {% endfor %}
+                        {% endif %}
+                        {% set missing_rate = 5 -  rate %}
+                        {% for i in 1..missing_rate %}
+                            <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="ps-3 pt-3">
+                    <div class="d-flex">
+                        <div class="p-3">
+                            <img src="{{ asset('build/images/uploads/' ~ salon.imagePath) }}" alt="salon photo" width="300" height="300">
+                            <div class="mt-3 ms-1">
+                                <h5>
+                                    <img src="{{ asset('build/images/working_hours_icon.png') }}" alt="hours" width="25" height="25">
+                                    Open hours:
+                                </h5>
+                                <ul style="list-style: none">
+                                    {% for work_hour in salon.salonWorkingHours %}
+                                        <li><span>{{ work_hour.dayName }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex">
+                                <div style="padding: 15px">
+                                    <h5><img src="{{ asset('build/images/hairdresser.png') }}" alt="scissor" width="25" height="25">
+                                        Choose your hairdresser:</h5>
+                                    {% for hairdresser in hairdressers %}
+                                        <input type="radio" id="{{ hairdresser.id }}" name="hairdresser" value="{{ hairdresser.id }}">
+                                        <label for="hairdresser">{{ hairdresser.user }}</label><br>
+                                    {% endfor %}
+                                </div>
+                                <div style="padding: 15px">
+                                    <h5><img src="{{ asset('build/images/scissor_icon.png') }}" alt="scissor" width="25" height="25">
+                                        Services you need:</h5>
+                                    {% for service in salon.salonServices %}
+                                        <input type="checkbox" id="{{ service.id }}" name="service" value="{{ service.id }}" data-duration="{{ service.duration }}">
+                                        <label for="service">{{ service.name }} - {{ service.price }} din</label><br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div>
+                                <label for="start">Start date:</label>
+
+                                <input type="date" id="start" name="reservationDate">
+
+                                <div id="freeHours" data-salonId="{{ salon.id }}"></div>
+                                <script>
+                                    let reservationDateInput = document.querySelector('input[name="reservationDate"]');
+                                    let today = new Date();
+                                    let tomorrow = new Date();
+                                    tomorrow.setDate(today.getDate()+1)
+                                    reservationDateInput.min = tomorrow.toISOString().slice(0, 10);
+                                    reservationDateInput.value = tomorrow.toISOString().slice(0, 10);
+                                    let twoWeekFromToday = new Date();
+                                    twoWeekFromToday.setDate(today.getDate()+14)
+                                    reservationDateInput.max = twoWeekFromToday.toISOString().slice(0, 10);
+
+                                    let freeHoursInput = document.querySelector('input[id="freeHours"]');
+                                    reservationDateInput.addEventListener('change', (event) => {
+
+                                        let totalDuration = 0;
+                                        document.querySelectorAll('input[name="service"]').forEach(service => {
+                                            if (service.checked) {
+                                                totalDuration += Number(service.dataset.duration);
+                                            }
+                                        })
+
+                                        if (totalDuration) {
+                                            let salonId = document.getElementById("freeHours").dataset.salonId;
+                                            let wantedDate = event.target.value;
+                                            let getFreeHoursUrl = `getFreeHours?salonId=${salonId}totalDuration=${totalDuration}&date=${wantedDate}`;
+
+
+                                            // send request
+                                            var xhttp = new XMLHttpRequest();
+                                            xhttp.onreadystatechange = function() {
+                                                if (this.readyState == 4 && this.status == 200) {
+                                                    let response = this.responseText;
+                                                    let hours = JSON.parse(response.data); //maybe response.data.data is needed
+
+                                                    // Given that new duration is 60 mins
+                                                    // data from server could look something like, if server didn't calculated already totalDuration
+                                                    // (only free hours/minutes ranges are given)
+                                                    // {
+                                                    //     "data": [
+                                                    //         {"min": "09:00:00", "max": "11:00:00"},
+                                                    //         {"min": "12:00:00", "max": "13:00:00"},
+                                                    //         {"min": "14::30:00", "max": "16:15:00"}
+                                                    //     ]
+                                                    // }
+                                                    // (if not calculated, it needs to look like this below, before applying to input field)
+                                                    // ... or like this, if it is calculated (the duration is already deducted from max)
+                                                    // {
+                                                    //     "data": [
+                                                    //         {"min": "09:00:00", "max": "10:00:00"},
+                                                    //         {"min": "12:00:00", "max": "12:00:00"},
+                                                    //         {"min": "14::30:00", "max": "15:15:00"}
+                                                    //     ]
+                                                    // }
+
+                                                    // out of the response an array with options can be created [09:00:00, 09:30:00, 10:00:00....]
+                                                    // and then presented to the user.
+                                                    let someNicelyFormattedHours = ["09:00:00", "09:30:00", "10:00:00"];
+                                                    let freeHoursWrapper = document.getElementById("freeHours");
+                                                    freeHoursWrapper.innerHTML = "";
+                                                    someNicelyFormattedHours.foreach(startingTime => {
+                                                        freeHoursWrapper.insertAdjacentHTML("beforeend", `
+                                                            <div>
+                                                                <p>hello</p>
+                                                                <input type="checkbox" name="timeSelection" value=>
+                                                            </div>
+                                                        `);
+                                                    });
+                                                }
+                                            };
+                                            xhttp.open("GET", getFreeHoursUrl, true);
+                                            xhttp.send();
+                                        }
+                                    });
+
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <a href="#"><button class="btn mt-5 blue-button" >Make an appointment</button></a>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
