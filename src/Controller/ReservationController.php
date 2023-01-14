@@ -68,6 +68,6 @@ class ReservationController extends AbstractController {
 
 
         return $this->json(['min' => $min,
-                            'max' => $max]);
+            'max' => $max]);
     }
 }

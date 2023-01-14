@@ -12,17 +12,14 @@ use App\Form\ServiceCreateForm;
 use App\Form\WorkingHoursForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\SalonWorkingHours;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class OwnerController extends AbstractController {
     //owner dashboard
@@ -41,7 +38,7 @@ class OwnerController extends AbstractController {
 
     //Salon info
     #[Route('/owner/{id}/salon/{salon_id}/show', name: 'app_owner_salon_show')]
-    public function owner_salon(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em, SluggerInterface $slugger):Response {
+    public function owner_salon(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em):Response {
 
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
@@ -52,25 +49,6 @@ class OwnerController extends AbstractController {
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $salon = $form->getData();
-
-            //image upload
-            $imagePath = $form->get('salonImages')->getData();
-            if($imagePath) {
-                $originalFilename = pathinfo($imagePath->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imagePath->guessExtension();
-                try {
-                    $imagePath->move(
-                        $this->getParameter('uploads_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    var_dump($e->getMessage());
-                }
-                $salon->setImagePath($newFilename);
-            }
-
-
             $em->persist($salon);
             $em->flush();
 
@@ -152,81 +130,51 @@ class OwnerController extends AbstractController {
         $user = $userRepository->find($id);
         $salon = $user->getSalon();
 
-
         $existingWorkingHours = $salon->getSalonWorkingHours();
-
 
         $form = $this->createForm(WorkingHoursForm::class, null,
             ['hours' => $existingWorkingHours]
         );
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $entityData = [];
-            $entityData[0] = [
-                'opening_at' => $data['mondayFrom'],
-                'closing_at' => $data['mondayTo']
-            ];
-            $entityData[1] = [
-                'opening_at' => $data['tuesdayFrom'],
-                'closing_at' => $data['tuesdayTo']
-            ];
-            $entityData[2] = [
-                'opening_at' => $data['wednesdayFrom'],
-                'closing_at' => $data['wednesdayTo']
-            ];
-            $entityData[3] = [
-                'opening_at' => $data['thursdayFrom'],
-                'closing_at' => $data['thursdayTo']
-            ];
-            $entityData[4] = [
-                'opening_at' => $data['fridayFrom'],
-                'closing_at' => $data['fridayTo']
-            ];
-            $entityData[5] = [
-                'opening_at' => $data['saturdayFrom'],
-                'closing_at' => $data['saturdayTo']
-            ];
-            $entityData[6] = [
-                'opening_at' => $data['sundayFrom'],
-                'closing_at' => $data['sundayTo']
-            ];
+
+            $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            foreach ($days as $day) {
+                $entityData[] = [
+                    'opening_at' => $data["{$day}From"],
+                    'closing_at' => $data["{$day}To"]
+                ];
+            }
+
+            $swhRepo = $doctrine->getRepository(SalonWorkingHours::class);
+            $swhSalonEntries = $swhRepo->findBy(['salon' => $salon]);
+            /** @var SalonWorkingHours $swhSalonEntry */
+            foreach ($swhSalonEntries as $swhSalonEntry) {
+                $em->remove($swhSalonEntry);
+            }
+            $em->flush();
 
             foreach ($entityData as $index => $workingHours) {
-
-                $dayExists = false;
-
-                foreach ($existingWorkingHours as $workingHours) {
-
-                }
-
-                if ($dayExists) {
-                    $swhRepo = $doctrine->getRepository(SalonWorkingHours::class);
-//                    $wh = $swhRepo->findBy(['day' => ]);
-                } else {
-                    $wh = new SalonWorkingHours();
-                }
-
-
-
+                $wh = new SalonWorkingHours();
                 $wh->setSalon($salon);
                 $wh->setOpeningAt($workingHours['opening_at']);
                 $wh->setClosingAt($workingHours['closing_at']);
                 $wh->setDay($index+1);
                 $em->persist($wh);
             }
-
             $em->flush();
 
             $this->addFlash('success', 'Your data is successfully saved!');
+
             return $this->render('owner/working_hours.html.twig', [
                 'salon' => $salon,
                 'user' => $user,
                 'form' => $form->createView()
             ]);
         }
-
-
 
         return $this->render('owner/working_hours.html.twig', [
             'salon' => $salon,
@@ -258,7 +206,7 @@ class OwnerController extends AbstractController {
 
     // Create hairdresser.
     #[Route('/owner/{id}/salon/{salon_id}/hairdressers/create', name: 'app_owner_hairdressers_create')]
-    public function owner_create_hairdressers(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasher):Response {
+    public function owner_create_hairdressers(ManagerRegistry $doctrine, $id, Request $request, EntityManagerInterface $em):Response {
 
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
@@ -276,12 +224,7 @@ class OwnerController extends AbstractController {
             $user->setFirstName($formData['firstName']);
             $user->setLastName($formData['lastName']);
             $user->setEmail($formData['email']);
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $formData['password']
-                )
-            );
+            $user->setPassword($formData['password']);
             $user->setRoles(["ROLE_HAIRDRESSER"]);
             $user->setIsVerified(true);
             $user->setPhoneNumber('Your phone number');
