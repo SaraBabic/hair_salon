@@ -2,143 +2,73 @@
 
 namespace App\Form;
 
-use App\Entity\Salon;
-use PhpParser\Node\Stmt\Label;
+use App\Entity\SalonWorkingHours;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class WorkingHoursForm extends AbstractType {
+class WorkingHoursForm extends AbstractType
+{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('mondayFrom', TextType::class, [
-                'attr'=>['class'=>'form-control monday'],
-                'label' => 'Monday from',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Start at',
-                    ])
-                ],
-            ])
-            ->add('mondayTo', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Monday to',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Close at',
-                    ])
-                ],
-            ])
-            ->add('tuesdayFrom', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Tuesday from',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Start at',
-                    ])
-                ],
-            ])
-            ->add('tuesdayTo', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Tuesday to',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Close at',
-                    ])
-                ],
-            ])
-            ->add('wednesdayFrom', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Wednesday from',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Start at',
-                    ])
-                ],
-            ])
-            ->add('wednesdayTo', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Wednesday to',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Close at',
-                    ])
-                ],
-            ])
-            ->add('thursdayFrom', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Thursday from',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Start at',
-                    ])
-                ],
-            ])
-            ->add('thursdayTo', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Thursday to',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Close at',
-                    ])
-                ],
-            ])
-            ->add('fridayFrom', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Friday from',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Start at',
-                    ])
-                ],
-            ])
-            ->add('fridayTo', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Friday to',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Close at',
-                    ])
-                ],
-            ])
-            ->add('saturdayFrom', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Saturday from',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Start at',
-                    ])
-                ],
-            ])
-            ->add('saturdayTo', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Saturday to',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Close at',
-                    ])
-                ],
-            ])
-            ->add('sundayFrom', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Sunday from',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Start at',
-                    ])
-                ],
-            ])
-            ->add('sundayTo', TextType::class, [
-                'attr'=>['class'=>'form-control'],
-                'label' => 'Sunday to',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Close at',
-                    ])
-                ],
+        $salonWorkingHours = [];
+        /** @var SalonWorkingHours $dayHours */
+        foreach ($options['hours'] as $dayHours) {
+            $salonWorkingHours[$dayHours->getDay()] = [
+                'from' => $dayHours->getOpeningAt(),
+                'to' => $dayHours->getClosingAt(),
+            ];
+        }
+
+        $defaultChoices = [
+            'closed' => null,
+            '07' => '07:00:00',
+            '08' => '08:00:00',
+            '09' => '09:00:00',
+            '10' => '10:00:00',
+            '11' => '11:00:00',
+            '12' => '12:00:00',
+            '13' => '13:00:00',
+            '14' => '14:00:00',
+            '15' => '15:00:00',
+            '16' => '16:00:00',
+            '17' => '17:00:00',
+            '18' => '18:00:00',
+            '19' => '19:00:00',
+            '20' => '20:00:00',
+            '21' => '21:00:00',
+        ];
+
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+        foreach ($days as $idx => $day) {
+            $dayNumber = $idx+1;
+            $from = ($day !== 'sunday') ? '07:00:00' : null;
+            $to = ($day !== 'sunday') ? '21:00:00' : null;
+            $labelFrom = "{$day} from";
+            $labelTo = "{$day} to";
+            $attr = ($day !== 'monday') ? ['class'=>'form-control'] : ['class'=>'form-control monday'];
+
+            $builder->add("{$day}From", ChoiceType::class, [
+                'attr'=> $attr,
+                'label' => $labelFrom,
+                'choices' => $defaultChoices,
+                'data' => isset($salonWorkingHours[$dayNumber]['from']) ? substr($salonWorkingHours[$dayNumber]['from'], 0, 2) : $from,
             ]);
+            $builder->add("{$day}To", ChoiceType::class, [
+                'attr'=> $attr,
+                'label' => $labelTo,
+                'choices' => $defaultChoices,
+                'data' => isset($salonWorkingHours[$dayNumber]['to']) ? substr($salonWorkingHours[$dayNumber]['to'], 0, 2) :  $to,
+            ]);
+        }
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'hours' => null
+        ]);
     }
 }

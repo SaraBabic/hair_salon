@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Salon;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,7 +54,14 @@ class SalonForm extends AbstractType {
                         'message' => 'Please enter your salons description',
                     ])
                 ],
-            ]);
+            ])
+            ->add('salonImages', FileType::class, [
+                'mapped' => false,
+                'attr'     => [
+                    'accept' => 'image/*'
+                ]
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

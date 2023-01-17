@@ -4,14 +4,15 @@
 
 {% block body %}
     <div class="plant-bg salon  plant-height">
-        <div class="w-50 m-auto">
+        <div class="m-auto">
             <h1>{{ salon.name }}</h1>
             <h3>Working hours</h3>
             <div>
                 {{ form_start(form, {'attr' : {'class': 'working-hours-form'}})}}
 
-                {{ form_end(form)}}
+                {{ form_widget(form) }}
                 <button class="btn blue-button" type="submit">Update</button>
+                {{ form_end(form)}}
             </div>
         </div>
     </div>

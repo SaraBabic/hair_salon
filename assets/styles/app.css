@@ -258,6 +258,11 @@ h1 {
     font-size: 60px;
 }
 .owner-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
     color: #fff;
     font-size: 30px;
     text-align: center;
@@ -296,11 +301,17 @@ h1 {
 }
 .working-hours-form {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 }
 .working-hours-form div {
+    display: flex;
+    flex-wrap: wrap;
     width: 50%;
-    padding: 10px;
+    padding: 2px 10px;
+}
+.working-hours-form button {
+    width: 50%;
 }
 h3 {
     text-align: center;
@@ -310,6 +321,31 @@ h3 {
     width: 100%;
     top: 60px;
 }
+
+textarea {
+    height: 200px;
+}
+.search {
+    width: 60%;
+}
+.salon {
+    width: 60%;
+}
+.salon-image {
+    width: 100%;
+    height: 100%;
+}
+.about-us {
+    width: 80%;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    color: white;
+    border-radius: 10px;
+}
+.about-us h5 {
+    color: #75BBBF;
+}
 @media only screen and (max-width: 990px){
     .footer-image {
         display: none;
@@ -318,8 +354,21 @@ h3 {
         display: flex;
         flex-direction: column;
         align-items: center;
+        font-size: 30px;
+    }
+    footer h5 {
+        font-size: 30px;
+    }
+    .footer-section {
+        width: 200px;
     }
     .developed {
         margin: auto;
+    }
+    .search {
+        width: 90%;
+    }
+    .salon {
+        width: 90%;
     }
 }

@@ -20,10 +20,10 @@ class SalonWorkingHours
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $day = null;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private $openingAt = null;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private $closingAt = null;
 
     public function getId(): ?int

@@ -9,6 +9,7 @@
             <div>
                 {{ form_start(form)}}
                 {{ form_widget(form) }}
+                <img src="{{ asset('build/images/uploads/'~ salon.imagePath) }}" alt="img" height="200" style="border-radius: 6px">
                 <br>
                 <button class="btn blue-button" type="submit">Update</button>
                 {{ form_end(form)}}

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -28,18 +29,20 @@ class ServiceCreateForm extends AbstractType {
                     ]),
                 ]
             ])
-            ->add('serviceDuration', NumberType::class, [
+            ->add('serviceDuration', ChoiceType::class, [
                 'attr' => [ 'class' => 'form-control'],
-                'html5' => true,
                 'label' => 'Service Duration ( min )',
+                'choices' => [
+                    '30' => 30,
+                    '60' => 60,
+                    '90' => 90,
+                    '120' => 120
+                ],
+                'data' => 30,
                 'constraints' => [
-                    new Range([
-                        'min' => '10',
-                        'max' => '250'
-                    ]),
+                    new NotBlank(),
                 ]
             ])
         ;
-
     }
 }

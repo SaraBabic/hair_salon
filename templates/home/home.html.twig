@@ -14,11 +14,13 @@
     </div>
     {% if app.user %}
         {% if 'ROLE_SALON_OWNER' in app.user.roles %}
-            <h1>Salon owner</h1>
+        <h1>Salon owner</h1>
 
+        {% elseif 'ROLE_HAIRDRESSER' in app.user.roles %}
+        <h1>Hairdresser</h1>
         {% endif %}
     {% endif %}
-    <div class="w-50 mx-auto mb-5 text-center searchCity">
+    <div class="search mx-auto mb-5 text-center searchCity">
             <h3 class="my-3 fw-bold">Find your nearest professional hair salon!</h3>
             <form method="get" action="{{ path('app_salon') }}" class="mx-auto">
                 <select name="city" class="form-select w-75 mx-auto js-example-basic-single">
@@ -40,9 +42,9 @@
         <div>
         {% set len = salons|length - 1 %}
         {% for i in 0..len %}
-            <div class="card shadow w-50 mx-auto my-3">
+            <div class="card shadow salon mx-auto my-3">
                 <a href="{{ path('app_salon_by_id', {'id': salons[i].id}) }}" class="text-decoration-none text-black d-block">
-                <img src="{{ asset('build/images/uploads/' ~ salons[i].imagePath) }}" class="card-img-top" alt="salon image" width="250" height="250">
+                <img src="{{ asset('build/images/uploads/' ~ salons[i].imagePath) }}" class="card-img-top salon-image" alt="salon image" width="250" height="250">
                 <div class="card-body">
                     <h5 class="card-title">{{ salons[i].name }}</h5>
                     <p class="card-text">

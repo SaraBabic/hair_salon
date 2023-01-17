@@ -29,6 +29,13 @@
                             <h2 class="logo-text">HairSalons</h2>
                         </div>
                     </a>
+                {% elseif 'ROLE_HAIRDRESSER' in app.user.roles%}
+                    <a class="navbar-brand ms-4" href="{{ path('app_hairdresser_dashboard', {id: app.user.id}) }}">
+                        <div class="logo">
+                            <img src="{{ asset('build/images/logo.png') }}" alt="hair_salon_logo">
+                            <h2 class="logo-text">HairSalons</h2>
+                        </div>
+                    </a>
                 {% else %}
                     <a class="navbar-brand ms-4" href="{{ path('app_home') }}">
                         <div class="logo">
@@ -67,7 +74,7 @@
                         <a class="nav-link " href="{{ path('app_salon') }}">Salon Offers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">About us</a>
+                        <a class="nav-link " href="{{ path('app_about_us') }}">About us</a>
                     </li>
                     {% if app.user %}
                         <li class="nav-item dropdown me-5">
@@ -77,10 +84,6 @@
                             <ul class="dropdown-menu">
                                 {% for role in app.user.roles %}
                                     {% if role == 'ROLE_SALON_OWNER' %}
-                                        <li><a class="dropdown-item" href="#">My Salon</a></li>
-                                        <li><a class="dropdown-item" href="#">Salon's Working Hours</a></li>
-                                        <li><a class="dropdown-item" href="#">Salon's Services</a></li>
-                                        <li><a class="dropdown-item" href="#">My hairdressers</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                     {% endif %}
                                     {% if role == 'ROLE_USER' %}
