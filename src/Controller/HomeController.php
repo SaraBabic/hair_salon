@@ -19,5 +19,10 @@ class HomeController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
             'cities' => $cities
         ]);
     }
+    #[Route('/about_us', name: 'app_about_us')]
+    public function aboutUs(SalonRepository $salonRepository): Response
+    {
+        return $this->render('about_us/index.html.twig',);
+    }
 
 }

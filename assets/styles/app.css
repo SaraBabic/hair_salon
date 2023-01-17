@@ -325,7 +325,27 @@ h3 {
 textarea {
     height: 200px;
 }
-
+.search {
+    width: 60%;
+}
+.salon {
+    width: 60%;
+}
+.salon-image {
+    width: 100%;
+    height: 100%;
+}
+.about-us {
+    width: 80%;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    color: white;
+    border-radius: 10px;
+}
+.about-us h5 {
+    color: #75BBBF;
+}
 @media only screen and (max-width: 990px){
     .footer-image {
         display: none;
@@ -334,8 +354,21 @@ textarea {
         display: flex;
         flex-direction: column;
         align-items: center;
+        font-size: 30px;
+    }
+    footer h5 {
+        font-size: 30px;
+    }
+    .footer-section {
+        width: 200px;
     }
     .developed {
         margin: auto;
+    }
+    .search {
+        width: 90%;
+    }
+    .salon {
+        width: 90%;
     }
 }
