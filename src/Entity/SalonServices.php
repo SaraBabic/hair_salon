@@ -79,7 +79,7 @@ class SalonServices
 
     public function getServiceTimeAndPrice():string
     {
-        return $this->duration . ' mins, ' . $this->price .' €';
+        return $this->duration . ' mins, ' . $this->price .' din';
     }
 
     public function getSalon(): ?Salon

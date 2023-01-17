@@ -37,6 +37,7 @@ security:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
          - { path: ^/owner, roles: ROLE_SALON_OWNER }
+         - { path: ^/hairdresser, roles: ROLE_HAIRDRESSER }
 
 when@test:
     security:

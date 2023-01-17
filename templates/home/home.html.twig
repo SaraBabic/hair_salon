@@ -12,14 +12,6 @@
             <h1>We care about your hair!</h1>
         </div>
     </div>
-    {% if app.user %}
-        {% if 'ROLE_SALON_OWNER' in app.user.roles %}
-        <h1>Salon owner</h1>
-
-        {% elseif 'ROLE_HAIRDRESSER' in app.user.roles %}
-        <h1>Hairdresser</h1>
-        {% endif %}
-    {% endif %}
     <div class="search mx-auto mb-5 text-center searchCity">
             <h3 class="my-3 fw-bold">Find your nearest professional hair salon!</h3>
             <form method="get" action="{{ path('app_salon') }}" class="mx-auto">

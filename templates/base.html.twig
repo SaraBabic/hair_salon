@@ -84,6 +84,11 @@
                             <ul class="dropdown-menu">
                                 {% for role in app.user.roles %}
                                     {% if role == 'ROLE_SALON_OWNER' %}
+                                        <li><a class="dropdown-item" href="{{ path('app_owner_dashboard', {id: app.user.id}) }}">My dashboard</a> </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                    {% endif %}
+                                    {% if role == 'ROLE_HAIRDRESSER' %}
+                                        <li><a class="dropdown-item" href="{{ path('app_hairdresser_dashboard', {id: app.user.id}) }}">My dashboard</a> </li>
                                         <li><hr class="dropdown-divider"></li>
                                     {% endif %}
                                     {% if role == 'ROLE_USER' %}
