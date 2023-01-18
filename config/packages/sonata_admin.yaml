@@ -1,8 +1,9 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title: 'Admin Dashboard'
+    title_logo: build/images/logo.png
     dashboard:
         blocks:
-            - { type: sonata.admin.block.admin_list, position: left }
+            - { type: sonata.admin.block.admin_list, position: center }
 
 sonata_block:
     blocks:
