@@ -1,11 +1,18 @@
-<h1>Hi! Please confirm your email!</h1>
-
-<p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
-</p>
-
-<p>
-    Cheers!
-</p>
+{% apply inline_css(source('@styles/email.css')) %}
+    <div class="all">
+        <h2>Hi! Please confirm your email!</h2>
+        <p>
+            Please confirm your email address by clicking the following link: <br><br>
+            <a href="{{ signedUrl|raw }}">Confirm my Email</a><br><br>
+            This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+        </p>
+        <hr>
+        <div class="signature">
+            <img src="{{ email.image('@images/footer-logo.png') }}" alt="">
+            <div>
+                Best regards,<br>
+                HairSalons Team by Sara and Ivona
+            </div>
+        </div>
+    </div>
+{% endapply %}

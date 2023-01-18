@@ -1,0 +1,41 @@
+.all{
+    font-family: 'PT Sans Narrow', sans-serif;
+    color: #f4f4f4;
+    padding: 25px 50px;
+    margin: auto;
+    background: linear-gradient( to bottom right , rgba(117, 187, 191, 0.65), rgba(0, 0, 0, 0.55) ) , center no-repeat;
+    background-size: cover;
+}
+h2{
+    text-align: center;
+    margin-bottom: 35px;
+}
+hr, p{
+    margin: auto auto 20px;
+}
+hr{
+    width: 93%;
+}
+p{
+    width: 85%;
+}
+a{
+    text-decoration: none;
+    color: #417475;
+}
+a:hover{
+    color: #1e393a;
+}
+img{
+    padding-left: 60px;
+    padding-right: 25px;
+    width: 50px;
+    height: 50px;
+}
+.signature{
+    font-weight: bold;
+    font-style: italic;
+    width: 82%;
+    padding-bottom: 20px;
+    display: flex;
+}

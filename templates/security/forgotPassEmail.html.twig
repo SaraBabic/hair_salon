@@ -1,8 +1,18 @@
-<h1>Hi! Click on link below to be able to change password!</h1>
-
-<p>
-    You can change your password by clicking the following link: <br><br>
-    <a href="{{ signedUrl|raw }}">Change</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
-</p>
-
+{% apply inline_css(source('@styles/email.css')) %}
+    <div class="all">
+        <h2>Hi! Click on link below to be able to change password!</h2>
+        <p>
+            You can change your password by clicking the following link: <br><br>
+            <a href="{{ signedUrl|raw }}">Change your password</a><br><br>
+            This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+        </p>
+        <hr>
+        <div class="signature">
+            <img src="{{ email.image('@images/footer-logo.png') }}" alt="">
+            <div>
+                Best regards,<br>
+                HairSalons Team by Sara and Ivona
+            </div>
+        </div>
+    </div>
+{% endapply %}
