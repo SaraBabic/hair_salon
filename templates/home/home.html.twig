@@ -18,9 +18,13 @@
                 <select name="city" class="form-select w-75 mx-auto js-example-basic-single">
                     <option value="0">Select your city...</option>
                     {% set len = cities|length - 1 %}
-                    {% for i in 0..len %}
-                        <option value="{{ cities[i].city }}">{{ cities[i].city }}</option>
-                    {% endfor %}
+                    {% if cities|length == 0 %}
+                        <option value="empty">No cities</option>
+                    {% else %}
+                        {% for i in 0..len %}
+                            <option value="{{ cities[i].city }}">{{ cities[i].city }}</option>
+                        {% endfor %}
+                    {% endif %}
                 </select>
                 <br>
                 <button class="btn w-75 blue-button" type="submit">Search</button>
@@ -33,29 +37,34 @@
         </div>
         <div>
         {% set len = salons|length - 1 %}
-        {% for i in 0..len %}
-            <div class="card shadow salon mx-auto my-3">
-                <a href="{{ path('app_salon_by_id', {'id': salons[i].id}) }}" class="text-decoration-none text-black d-block">
-                <img src="{{ asset('build/images/uploads/' ~ salons[i].imagePath) }}" class="card-img-top salon-image" alt="salon image" width="250" height="250">
-                <div class="card-body">
-                    <h5 class="card-title">{{ salons[i].name }}</h5>
-                    <p class="card-text">
-                        {% set rate =  0 %}
-                        {% if salons[i].rate > 0 %}
-                        {% set rate = salons[i].rate | round(0,'floor') %}
-                            {% for i in 1..rate %}
-                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+
+        {% if cities|length == 0 %}
+            <h1>There are no cities in database!</h1>
+        {% else %}
+            {% for i in 0..len %}
+                <div class="card shadow salon mx-auto my-3">
+                    <a href="{{ path('app_salon_by_id', {'id': salons[i].id}) }}" class="text-decoration-none text-black d-block">
+                    <img src="{{ asset('build/images/uploads/' ~ salons[i].imagePath) }}" class="card-img-top salon-image" alt="salon image" width="250" height="250">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ salons[i].name }}</h5>
+                        <p class="card-text">
+                            {% set rate =  0 %}
+                            {% if salons[i].rate > 0 %}
+                            {% set rate = salons[i].rate | round(0,'floor') %}
+                                {% for i in 1..rate %}
+                                <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                                {% endfor %}
+                            {% endif %}
+                            {% set missing_rate = 5 -  rate %}
+                            {% for i in 1..missing_rate %}
+                                <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
                             {% endfor %}
-                        {% endif %}
-                        {% set missing_rate = 5 -  rate %}
-                        {% for i in 1..missing_rate %}
-                            <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
-                        {% endfor %}
-                    </p>
+                        </p>
+                    </div>
+                    </a>
                 </div>
-                </a>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
         </div>
     </div>
 {% endblock %}
