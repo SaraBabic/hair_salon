@@ -2,6 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +19,28 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post( denormalizationContext: ['groups'=>['user:write']]),
+        new Put( denormalizationContext: ['groups'=>['user:put']]),
+        new Delete()
+    ],
+    class: User::class,
+    normalizationContext: ['groups'=>['user:read']],
+)]
+#[ApiFilter(
+    BooleanFilter::class, properties: ['isBanned', 'isVerified']
+)]
+#[ApiFilter(
+    SearchFilter::class, properties: ['firstName'=>'partial', 'lastName'=>'partial']
+)]
+//TODO searchFilter za role
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -22,32 +52,87 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @Assert\Email()
+     */
+    #[Groups([
+        'user:read', 'user:write',
+        'log:read',
+        'hairdresser:read', 'hairdresser:write',
+        'user:hairdresser:read',
+        'salon:read',
+        'ratings:read'
+    ])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[Groups([
+        'user:write','user:put',
+        'hairdresser:write'
+    ])]
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
+     * @Assert\Length(
+     *     min=8,
+     *     minMessage="Password must be at least 8 characters long."
+     * )
      */
     #[ORM\Column]
     private ?string $password = null;
 
+    /**
+     * @Assert\Length(
+     *     min=2
+     * )
+     */
+    #[Groups([
+        'user:read','user:write', 'user:put',
+        'hairdresser:read', 'hairdresser:write',
+        'user:hairdresser:read'
+    ])]
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
+    /**
+     * @Assert\Length(
+     *     min=2
+     * )
+     */
+    #[Groups(['user:read','user:write', 'user:put',
+        'hairdresser:read', 'hairdresser:write',
+        'user:hairdresser:read'])]
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
+    /**
+     * @Assert\Length(
+     *     min=6
+     * )
+     */
+    #[Groups([
+        'user:read','user:write', 'user:put',
+        'hairdresser:write',
+        'user:hairdresser:read'
+    ])]
     #[ORM\Column(length: 255)]
     private ?string $phoneNumber = null;
 
+    #[Groups([
+        'user:read', 'user:write', 'user:put',
+        'hairdresser:write',
+        'user:hairdresser:read'
+    ])]
     #[ORM\Column]
     private ?bool $isVerified = false;
 
     #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private ?Salon $salon = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?HairdresserDetails $hairdresserDetails = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SalonRating::class)]
     private Collection $salonRatings;
@@ -61,6 +146,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Logs::class)]
     private Collection $logs;
 
+    #[Groups([
+        'user:read', 'user:write', 'user:put',
+        'user:hairdresser:read'
+    ])]
     #[ORM\Column]
     private ?bool $isBanned = false;
 
@@ -123,6 +212,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    #[SerializedName('roles')]
+    #[Groups([
+        'user:read',
+        'user:hairdresser:read'
+    ])]
     public function getRolesAsString()
     {
         return implode(',', $this->roles);
@@ -147,6 +241,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->password = $password;
 
+        return $this;
+    }
+
+    /**
+     * @var string User's plain password
+     */
+    #[SerializedName('password')]
+    #[Groups([
+        'user:write','user:put',
+        'hairdresser:write'
+    ])]
+    public function setPlainPassword(string $plainPass)
+    {
+        $this->password = password_hash($plainPass, PASSWORD_BCRYPT);
         return $this;
     }
 
