@@ -56,7 +56,9 @@ class SalonServices
     private ?int $id = null;
 
     #[Groups(['salon:read', 'salon:write', 'salon:put',
-        'services:read', 'services:write', 'services:put'])]
+        'services:read', 'services:write', 'services:put',
+        'reservation:read'
+    ])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 

@@ -61,7 +61,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         'hairdresser:read', 'hairdresser:write',
         'user:hairdresser:read',
         'salon:read',
-        'ratings:read'
+        'ratings:read',
+        'reservation:read'
     ])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
