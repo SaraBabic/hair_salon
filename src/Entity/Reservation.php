@@ -2,11 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\ReservationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post( denormalizationContext: ['groups'=>['reservation:write']]),
+        new Put( denormalizationContext:  ['groups'=>['reservation:put']]),
+        new Delete()
+    ],
+    class: User::class,
+    normalizationContext: ['groups'=>['reservation:read']]
+)]
+#[ApiFilter(
+    DateFilter::class, properties: ['startAt', 'endAt']
+)]
+#[ApiFilter(
+    SearchFilter::class, properties: ['customer'=>'exact', 'hairdresser'=>'exact']
+)]
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
 {
@@ -15,19 +44,34 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['reservation:read', 'reservation:write', 'reservation:put'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $startAt = null;
 
+    #[Groups(['reservation:read','reservation:write', 'reservation:put'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $endAt = null;
 
+    /**
+     * @Assert\Valid()
+     */
+    #[Groups(['reservation:read', 'reservation:write'])]
     #[ORM\ManyToOne(inversedBy: 'customerReservations')]
     private ?User $customer = null;
 
+    /**
+     * @Assert\Valid()
+     */
+    #[Groups(['reservation:read', 'reservation:write'])]
     #[ORM\ManyToOne(inversedBy: 'hairdresserReservations')]
     private ?User $hairdresser = null;
 
-    #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: ReservationServices::class)]
+    /**
+     * @Assert\Valid()
+     */
+    #[Groups(['reservation:read', 'reservation:write'])]
+    #[SerializedName('services')]
+    #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: ReservationServices::class, cascade: ['persist', 'remove'])]
     private Collection $reservationServices;
 
     public function __construct()

@@ -2,11 +2,39 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\SalonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post( denormalizationContext: ['groups'=>['salon:write']]),
+        new Put( denormalizationContext: ['groups'=>['salon:put']]),
+        new Delete()
+    ],
+    class: Salon::class,
+    normalizationContext: ['groups'=>['salon:read']]
+)]
+#[ApiFilter(
+    BooleanFilter::class, properties: ['isActive']
+)]
+#[ApiFilter(
+    SearchFilter::class, properties: ['city'=>'partial', 'name'=>'partial', 'owner'=>'exact']
+)]
 #[ORM\Entity(repositoryClass: SalonRepository::class)]
 class Salon
 {
@@ -15,40 +43,98 @@ class Salon
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups([
+        'hairdresser:read','user:hairdresser:read',
+        'salon:read', 'salon:write', 'salon:put',
+        'services:read',
+        'workingHours:read',
+        'ratings:read'
+    ])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /**
+     * @Assert\Length(
+     *     min=2
+     * )
+     */
+    #[Groups(['salon:read', 'salon:write', 'salon:put'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
 
+    /**
+     * @Assert\Length(
+     *     min=2
+     * )
+     */
+    #[Groups(['salon:read', 'salon:write','salon:put'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
+    #[Groups(['salon:read', 'salon:write', 'salon:put'])]
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    /**
+     * @Assert\Length(
+     *     min=6
+     * )
+     */
+    #[Groups(['salon:read', 'salon:write', 'salon:put'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
+    /**
+     * @Assert\Length(
+     *     min=20,
+     *     minMessage="Description of salon must be at least 20 characters long."
+     * )
+     */
+    #[Groups(['salon:read', 'salon:write', 'salon:put'])]
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
+    /**
+     * @var string Name of image file with extension.
+     * @Assert\Length(
+     *     min=5,
+     *     minMessage="Image file name must be at least 5 characters long."
+     * )
+     */
+    #[Groups(['salon:write', 'salon:put'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagePath = null;
 
+    /**
+     * @Assert\Valid()
+     */
+    #[Groups(['salon:read', 'salon:write','salon:put'])]
     #[ORM\OneToOne(inversedBy: 'salon', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
+    #[Groups(['salon:read'])]
     #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonRating::class)]
     private Collection $rating;
 
-    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonWorkingHours::class)]
+    /**
+     * @Assert\Valid()
+     */
+    #[Groups(['salon:read', 'salon:write', 'salon:put'])]
+    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonWorkingHours::class, cascade: ['persist', 'remove'])]
     private Collection $salonWorkingHours;
 
-    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonServices::class)]
+    /**
+     * @Assert\Valid()
+     */
+    #[Groups(['salon:read', 'salon:write', 'salon:put'])]
+    #[ORM\OneToMany(mappedBy: 'salon', targetEntity: SalonServices::class, cascade: ['persist', 'remove'])]
     private Collection $salonServices;
 
+    /**
+     * @Assert\Valid()
+     */
+    #[Groups(['salon:read'])]
     #[ORM\OneToMany(mappedBy: 'salon', targetEntity: HairdresserDetails::class)]
     private Collection $hairdresser;
 
