@@ -346,6 +346,18 @@ textarea {
 .about-us h5 {
     color: #75BBBF;
 }
+.selectedTime {
+    background: #75BBBF;
+}
+.input-datepicker {
+    padding: 5px;
+}
+.day-container {
+    margin: 15px;
+}
+#freeHours {
+    margin: 15px;
+}
 @media only screen and (max-width: 990px){
     .footer-image {
         display: none;
@@ -366,9 +378,6 @@ textarea {
         margin: auto;
     }
     .search {
-        width: 90%;
-    }
-    .salon {
         width: 90%;
     }
 }

@@ -40,13 +40,15 @@
                                 </ul>
                             </div>
                         </div>
-                        <div>
+
+
+                        <form action="/reservation" method="post">
                             <div class="d-flex">
                                 <div style="padding: 15px">
                                     <h5><img src="{{ asset('build/images/hairdresser.png') }}" alt="scissor" width="25" height="25">
                                         Choose your hairdresser:</h5>
                                     {% for hairdresser in hairdressers %}
-                                        <input type="radio" id="{{ hairdresser.id }}" name="hairdresser" value="{{ hairdresser.id }}">
+                                        <input type="radio" id="{{ hairdresser.id }}" name="hairdresser" value="{{ hairdresser.getUser().getId() }}">
                                         <label for="hairdresser">{{ hairdresser.user }}</label><br>
                                     {% endfor %}
                                 </div>
@@ -54,19 +56,32 @@
                                     <h5><img src="{{ asset('build/images/scissor_icon.png') }}" alt="scissor" width="25" height="25">
                                         Services you need:</h5>
                                     {% for service in salon.salonServices %}
-                                        <input type="checkbox" id="{{ service.id }}" name="service" value="{{ service.id }}" data-duration="{{ service.duration }}">
-                                        <label for="service">{{ service.name }} - {{ service.price }} din</label><br>
+                                        <input type="checkbox" id="{{ service.id }}" name="services[]" value="{{ service.id }}" data-duration="{{ service.duration }}">
+                                        <label for="services">{{ service.name }} - {{ service.price }} din</label><br>
                                     {% endfor %}
                                 </div>
                             </div>
                             <div>
-                                <label for="start">Start date:</label>
+                                <div class="day-container">
+                                    <label for="start">Day:</label>
 
-                                <input type="date" id="start" name="reservationDate">
+                                    <input type="date" id="start" name="reservationDate" class="input-datepicker">
+                                </div>
+                                <input type="text" hidden name="td">
 
                                 <div id="freeHours" data-salonId="{{ salon.id }}"></div>
                                 <script>
+                                    let data = {
+                                        hairdresser: '',
+                                        date: '',
+                                        time: '',
+                                        services: []
+                                    };
+                                    let hairdresser = document.querySelector('[name="hairdresser"]');
+                                    let services = document.querySelectorAll('[name="services[]"]');
+
                                     let reservationDateInput = document.querySelector('input[name="reservationDate"]');
+
                                     let today = new Date();
                                     let tomorrow = new Date();
                                     tomorrow.setDate(today.getDate()+1)
@@ -80,72 +95,133 @@
                                     reservationDateInput.addEventListener('change', (event) => {
 
                                         let totalDuration = 0;
-                                        document.querySelectorAll('input[name="service"]').forEach(service => {
+                                        document.querySelectorAll('input[name="services[]"]').forEach(service => {
                                             if (service.checked) {
                                                 totalDuration += Number(service.dataset.duration);
                                             }
+                                            document.querySelector('input[name="td"]').value = totalDuration;
                                         })
 
-                                        if (totalDuration) {
-                                            let salonId = document.getElementById("freeHours").dataset.salonId;
-                                            let wantedDate = event.target.value;
-                                            let getFreeHoursUrl = `getFreeHours?salonId=${salonId}totalDuration=${totalDuration}&date=${wantedDate}`;
+                                        let salonId = document.getElementById("freeHours").dataset.salonid;
+                                        let hId = hairdresser.value;
+                                        let wantedDate = event.target.value;
+                                        let getFreeHoursUrl = `/getFreeHours?salonId=${salonId}&totalDuration=${totalDuration}&date=${wantedDate}&hairdresser=${hId}`;
 
+                                        // send request
+                                        var xhttp = new XMLHttpRequest();
+                                        xhttp.onreadystatechange = function() {
+                                            if (this.readyState == 4 && this.status == 200) {
+                                                let hours = JSON.parse(this.response).data;
+                                                let someNicelyFormattedHours = hours;
+                                                let freeHoursWrapper = document.getElementById("freeHours");
+                                                freeHoursWrapper.innerHTML = "";
+                                                let btnHtml = '<div>';
+                                                console.log(someNicelyFormattedHours);
 
-                                            // send request
-                                            var xhttp = new XMLHttpRequest();
-                                            xhttp.onreadystatechange = function() {
-                                                if (this.readyState == 4 && this.status == 200) {
-                                                    let response = this.responseText;
-                                                    let hours = JSON.parse(response.data); //maybe response.data.data is needed
-
-                                                    // Given that new duration is 60 mins
-                                                    // data from server could look something like, if server didn't calculated already totalDuration
-                                                    // (only free hours/minutes ranges are given)
-                                                    // {
-                                                    //     "data": [
-                                                    //         {"min": "09:00:00", "max": "11:00:00"},
-                                                    //         {"min": "12:00:00", "max": "13:00:00"},
-                                                    //         {"min": "14::30:00", "max": "16:15:00"}
-                                                    //     ]
-                                                    // }
-                                                    // (if not calculated, it needs to look like this below, before applying to input field)
-                                                    // ... or like this, if it is calculated (the duration is already deducted from max)
-                                                    // {
-                                                    //     "data": [
-                                                    //         {"min": "09:00:00", "max": "10:00:00"},
-                                                    //         {"min": "12:00:00", "max": "12:00:00"},
-                                                    //         {"min": "14::30:00", "max": "15:15:00"}
-                                                    //     ]
-                                                    // }
-
-                                                    // out of the response an array with options can be created [09:00:00, 09:30:00, 10:00:00....]
-                                                    // and then presented to the user.
-                                                    let someNicelyFormattedHours = ["09:00:00", "09:30:00", "10:00:00"];
-                                                    let freeHoursWrapper = document.getElementById("freeHours");
-                                                    freeHoursWrapper.innerHTML = "";
-                                                    someNicelyFormattedHours.foreach(startingTime => {
-                                                        freeHoursWrapper.insertAdjacentHTML("beforeend", `
-                                                            <div>
-                                                                <p>hello</p>
-                                                                <input type="checkbox" name="timeSelection" value=>
-                                                            </div>
-                                                        `);
-                                                    });
+                                                if (someNicelyFormattedHours.length) {
+                                                    data.date = wantedDate;
+                                                    if (data.hairdresser && data.services.length && data.date && data.time) {
+                                                        makeReservationBtn.disabled = false;
+                                                    } else {
+                                                        makeReservationBtn.disabled = true;
+                                                    }
                                                 }
-                                            };
-                                            xhttp.open("GET", getFreeHoursUrl, true);
-                                            xhttp.send();
-                                        }
+
+
+                                                someNicelyFormattedHours.forEach((h, i, arr) => {
+                                                    console.log("i = ", i);
+                                                    console.log("h = ", h);
+
+                                                    if (i === 0) {
+                                                        btnHtml += `<div>
+                                                            <button type="button" class="timeSelectionBtn">${h}</button>
+                                                            <input type="radio" name="timeSelection" value=${h} hidden>
+                                                        `;
+                                                    } else if (i > 0 && (arr[i].substring(0, 2) !== arr[i-1].substring(0, 2))) {
+                                                        btnHtml += `</div><div>
+                                                            <button type="button" class="timeSelectionBtn">${h}</button>
+                                                            <input type="radio" name="timeSelection" value=${h} hidden>
+                                                        `;
+                                                    } else {
+                                                        btnHtml += `
+                                                            <button type="button" class="timeSelectionBtn">${h}</button>
+                                                            <input type="radio" name="timeSelection" value=${h} hidden>
+                                                        `;
+                                                    }
+
+                                                    if (i === arr.length-1) {
+                                                        btnHtml += `</div>`
+                                                    }
+                                                });
+                                                btnHtml += '</div>';
+                                                freeHoursWrapper.insertAdjacentHTML("beforeend", btnHtml);
+                                                document.querySelectorAll(".timeSelectionBtn").forEach(el => {
+                                                    el.addEventListener("click", function (event) {
+                                                        document.querySelectorAll(".timeSelectionBtn").forEach(el=> {
+                                                            if (el.classList.contains('selectedTime')) {
+                                                                el.classList.remove('selectedTime');
+                                                            }
+                                                        });
+                                                        let v = event.target.innerText;
+                                                        document.querySelector(`[value="${v}"]`).checked = true;
+                                                        event.target.classList.add('selectedTime');
+
+                                                        data.time = v;
+                                                        if (data.hairdresser && data.services.length && data.date && data.time) {
+                                                            makeReservationBtn.disabled = false;
+                                                        } else {
+                                                            makeReservationBtn.disabled = true;
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        };
+                                        xhttp.open("GET", getFreeHoursUrl, true);
+
+                                        xhttp.send();
                                     });
 
                                 </script>
 
                             </div>
-                        </div>
+
+
+                            <button id="makeReservationBtn" type="submit" disabled class="btn mt-5 blue-button">Make an appointment</button>
+
+                        </form>
                     </div>
-                    <br>
-                    <a href="#"><button class="btn mt-5 blue-button" >Make an appointment</button></a>
+
+                    <script>
+                        let makeReservationBtn = document.getElementById("makeReservationBtn");
+
+
+                        hairdresser.addEventListener("change", function(event) {
+                            data.hairdresser = event.target.value;
+                            if (data.hairdresser && data.services.length && data.date && data.time) {
+                                makeReservationBtn.disabled = false;
+                            } else {
+                                makeReservationBtn.disabled = true;
+                            }
+                        });
+                        services.forEach(service => {
+                            service.addEventListener("change", function(event) {
+                                if (event.target.checked) {
+                                    data.services.push(event.target.value);
+                                } else {
+                                    let i = data.services.indexOf(event.target.value);
+                                    data.services.splice(i,1);
+                                }
+
+                                if (data.hairdresser && data.services.length && data.date && data.time) {
+                                    makeReservationBtn.disabled = false;
+                                } else {
+                                    makeReservationBtn.disabled = true;
+                                }
+                            });
+                        })
+
+
+                    </script>
                     <br>
                 </div>
             </div>

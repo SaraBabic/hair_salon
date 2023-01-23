@@ -37,7 +37,7 @@
                         </div>
                     </a>
                 {% else %}
-                    <a class="navbar-brand ms-4" href="{{ path('app_home') }}">
+                    <a class="navbar-brand ms-4" href="{{ path('app_user', {id: app.user.id}) }}">
                         <div class="logo">
                             <img src="{{ asset('build/images/logo.png') }}" alt="hair_salon_logo">
                             <h2 class="logo-text">HairSalons</h2>
@@ -94,7 +94,7 @@
                                     {% if role == 'ROLE_USER' %}
                                         <li><a class="dropdown-item" href="{{ path('app_user_profile') }}">Edit Profile Info</a></li>
                                         <li><a class="dropdown-item" href="{{ path('app_change_password') }}">Change Password</a></li>
-                                        <li><a class="dropdown-item" href="#">My Reservations</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_user_reservations', {id: app.user.id}) }}">My Reservations</a></li>
                                     {% endif %}
                                 {% endfor %}
                                 <li><hr class="dropdown-divider"></li>
