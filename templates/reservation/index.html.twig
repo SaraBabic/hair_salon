@@ -77,7 +77,7 @@
                                         time: '',
                                         services: []
                                     };
-                                    let hairdresser = document.querySelector('[name="hairdresser"]');
+                                    let hairdressers = document.querySelectorAll('[name="hairdresser"]');
                                     let services = document.querySelectorAll('[name="services[]"]');
 
                                     let reservationDateInput = document.querySelector('input[name="reservationDate"]');
@@ -103,7 +103,7 @@
                                         })
 
                                         let salonId = document.getElementById("freeHours").dataset.salonid;
-                                        let hId = hairdresser.value;
+                                        let hId = data.hairdresser;
                                         let wantedDate = event.target.value;
                                         let getFreeHoursUrl = `/getFreeHours?salonId=${salonId}&totalDuration=${totalDuration}&date=${wantedDate}&hairdresser=${hId}`;
 
@@ -167,6 +167,7 @@
                                                         event.target.classList.add('selectedTime');
 
                                                         data.time = v;
+
                                                         if (data.hairdresser && data.services.length && data.date && data.time) {
                                                             makeReservationBtn.disabled = false;
                                                         } else {
@@ -194,15 +195,17 @@
                     <script>
                         let makeReservationBtn = document.getElementById("makeReservationBtn");
 
-
-                        hairdresser.addEventListener("change", function(event) {
-                            data.hairdresser = event.target.value;
-                            if (data.hairdresser && data.services.length && data.date && data.time) {
-                                makeReservationBtn.disabled = false;
-                            } else {
-                                makeReservationBtn.disabled = true;
-                            }
+                        hairdressers.forEach(hairdresser => {
+                            hairdresser.addEventListener("change", function(event) {
+                                data.hairdresser = event.target.value;
+                                if (data.hairdresser && data.services.length && data.date && data.time) {
+                                    makeReservationBtn.disabled = false;
+                                } else {
+                                    makeReservationBtn.disabled = true;
+                                }
+                            });
                         });
+
                         services.forEach(service => {
                             service.addEventListener("change", function(event) {
                                 if (event.target.checked) {
@@ -218,7 +221,7 @@
                                     makeReservationBtn.disabled = true;
                                 }
                             });
-                        })
+                        });
 
 
                     </script>

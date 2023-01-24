@@ -11,11 +11,32 @@
                     <tr>
                         <th>Salon</th>
                         <th>Hairdresser</th>
+                        <th>Services</th>
                         <th>Start at</th>
                         <th>End at</th>
+                        <th>Cancel</th>
+                        <th>Rate</th>
                     </tr>
                 </thead>
                 <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <th>{{ reservation.getHairdresser().getHairdresserDetails().getSalon().getName() }}</th>
+                        <th>{{ reservation.hairdresser }}</th>
+                        <th>
+                            {% for service in reservation.getReservationServices() %}
+                                {{ service.getId() }}
+                            {% endfor %}
+                        <th>{{ reservation.startAt|date('d.m H:i') }}</th>
+                        <th>{{ reservation.endAt|date('d.m H:i') }}</th>
+                        <th><a href="{{ path('cancel_reservation', {id: user.id, reservation_id: reservation.id}) }}">
+                                <button type="reset" class="btn {{ reservation.canceled?"btn-danger":"btn-success" }}">
+                                    {{ reservation.canceled?"Canceled":"Cancel" }}
+                                </button>
+                            </a></th>
+                        <th>Rate</th>
+                    </tr>
+                {% endfor %}
 
                 </tbody>
             </table>

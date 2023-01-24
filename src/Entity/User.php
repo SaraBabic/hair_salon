@@ -132,8 +132,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private ?Salon $salon = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?HairdresserDetails $hairdresserDetails = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SalonRating::class)]
     private Collection $salonRatings;
@@ -153,6 +151,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     ])]
     #[ORM\Column]
     private ?bool $isBanned = false;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?HairdresserDetails $hairdresserDetails = null;
 
     public function __construct()
     {
@@ -466,6 +467,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsBanned(bool $isBanned): self
     {
         $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function getHairdresserDetails(): ?HairdresserDetails
+    {
+        return $this->hairdresserDetails;
+    }
+
+    public function setHairdresserDetails(?HairdresserDetails $hairdresserDetails): self
+    {
+        $this->hairdresserDetails = $hairdresserDetails;
 
         return $this;
     }
