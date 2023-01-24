@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20221128093738 extends AbstractMigration
+final class Version20230124174201 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,12 @@ final class Version20221128093738 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE salon ADD owner_id INT NOT NULL');
-        $this->addSql('ALTER TABLE salon ADD CONSTRAINT FK_F268F4177E3C61F9 FOREIGN KEY (owner_id) REFERENCES user (id)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_F268F4177E3C61F9 ON salon (owner_id)');
+        $this->addSql('ALTER TABLE reservation ADD canceled TINYINT(1) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE salon DROP FOREIGN KEY FK_F268F4177E3C61F9');
-        $this->addSql('DROP INDEX UNIQ_F268F4177E3C61F9 ON salon');
-        $this->addSql('ALTER TABLE salon DROP owner_id');
+        $this->addSql('ALTER TABLE reservation DROP canceled');
     }
 }

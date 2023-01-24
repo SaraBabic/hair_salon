@@ -32,36 +32,46 @@ class MyReservationsController extends AbstractController
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
-        $reservationsRepository = $doctrine->getRepository(Reservation::class)->findBy(['customer' => $user] );
+        $reservations = $doctrine->getRepository(Reservation::class)->findBy(['customer' => $user] );
         $salons = $doctrine->getRepository(Salon::class);
         $hairdresserDetails = $doctrine->getRepository(HairdresserDetails::class);
         $reservationServices = $doctrine->getRepository(ReservationServices::class);
         $servicesRepository = $doctrine->getRepository(SalonServices::class);
-        $reservations = [];
         /** @var Reservation $reservation */
-        $i = 0;
-        $one_reservation = [];
-        foreach ($reservationsRepository as $reservation) {
-            // salon, address, hairdresser, time, services
-            $reservationHairdresser = $reservation->getHairdresser();
-            /** @var HairdresserDetails $hairdresser */
 
 
-//            $startAt = $reservation->getStartAt();
-//            $endAt = $reservation->getEndAt();
-//            $services = $reservation->getReservationServices();
-//            $one_reservation[$i]['startAt'] = $startAt;
-//            $one_reservation[$i]['endAt'] = $endAt;
-//            $one_reservation[$i]['reservationServices'] = $reservationServices;
-//            $i++;
-        }
-        $reservations = $one_reservation;
-//        dd($reservations);
+
         return $this->render('user/index.html.twig', [
             'user' => $user,
             'salons' => $salons,
             'reservations' => $reservations,
             'hairdressers' => $hairdresserDetails
+        ]);
+    }
+
+    // Activate/Deactivate hairdresser
+    #[Route('/user/{id}/reservation/{reservation_id}/cancel', name: 'cancel_reservation', methods: ['GET'])]
+    public function cancel_reservation($reservation_id, ManagerRegistry $doctrine, EntityManagerInterface $entityManager, $id): Response
+    {
+        $userRepository = $doctrine->getRepository(User::class);
+        /** @var User $user */
+        $user = $userRepository->find($id);
+        $reservationRepository = $doctrine->getRepository(Reservation::class);
+        /** @var Reservation $reservation */
+        $reservation = $reservationRepository->find($reservation_id);
+
+        if($reservation->getCanceled()) {
+            $reservation->setCanceled(false);
+        }
+        else {
+            $reservation->setCanceled(true);
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_reservations', [
+            'user' => $user,
+            'id' => $id,
         ]);
     }
 }

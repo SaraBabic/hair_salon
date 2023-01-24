@@ -74,6 +74,9 @@ class Reservation
     #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: ReservationServices::class, cascade: ['persist', 'remove'])]
     private Collection $reservationServices;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $canceled = null;
+
     public function __construct()
     {
         $this->reservationServices = new ArrayCollection();
@@ -158,6 +161,18 @@ class Reservation
                 $reservationService->setReservation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCanceled(): ?bool
+    {
+        return $this->canceled;
+    }
+
+    public function setCanceled(?bool $canceled): self
+    {
+        $this->canceled = $canceled;
 
         return $this;
     }

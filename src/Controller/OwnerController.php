@@ -237,6 +237,10 @@ class OwnerController extends AbstractController {
             $em->persist($hairdresserDetails);
             $em->flush();
 
+            $user->setHairdresserDetails($hairdresserDetails);
+            $em->persist($user);
+            $em->flush();
+
             $this->addFlash('success', 'You successfully added a hairdresser to your salon!');
             return $this->redirectToRoute('app_owner_hairdressers', [
                 'id' => $id,
