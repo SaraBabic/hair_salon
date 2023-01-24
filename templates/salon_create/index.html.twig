@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme salonCreateForm 'bootstrap_5_layout.html.twig' %}
 
 {% block title %}Create your salon!{% endblock %}
 
@@ -14,10 +15,16 @@
 
             {{ form_start(salonCreateForm) }}
             {{ form_widget(salonCreateForm) }}
+            <div id="displayImages"></div>
             <br>
             <button type="submit" class="btn blue-button">Send!</button>
             {{ form_end(salonCreateForm) }}
         </div>
     </div>
+
+    {% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('salonCreate') }}
+    {% endblock %}
 
 {% endblock %}

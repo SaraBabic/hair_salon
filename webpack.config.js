@@ -25,6 +25,12 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('header', './assets/scripts/header.js')
+    .addEntry('changePassword', './assets/scripts/changePassword.js')
+    .addEntry('editProfile', './assets/scripts/editProfile.js')
+    .addEntry('forgotPassword', './assets/scripts/forgotPassword.js')
+    .addEntry('login', './assets/scripts/login.js')
+    .addEntry('register', './assets/scripts/registration.js')
+    .addEntry('salonCreate', './assets/scripts/salonCreate.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
