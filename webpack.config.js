@@ -31,6 +31,7 @@ Encore
     .addEntry('login', './assets/scripts/login.js')
     .addEntry('register', './assets/scripts/registration.js')
     .addEntry('salonCreate', './assets/scripts/salonCreate.js')
+    .addEntry('hairdresserCreate', './assets/scripts/hairdresserCreate.js')
     .addEntry('ratingScript', './assets/scripts/rating.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

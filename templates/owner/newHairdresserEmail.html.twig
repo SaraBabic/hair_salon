@@ -1,0 +1,21 @@
+{% apply inline_css(source('@styles/email.css')) %}
+    <div class="all">
+        <h2>Hi, {{ user }}!</h2>
+        <p>
+            Owner of your salon has made profile for you!<br>
+            You can <a href="http://127.0.0.1:8000/login">log in</a> to your account and update your bio!
+        </p>
+        <p>
+            Thank you for signing in to our community!<br>
+            We wish you all the best!
+        </p>
+        <hr>
+        <div class="signature">
+            <img src="{{ email.image('@images/footer-logo.png') }}" alt="">
+            <div>
+                Best regards,<br>
+                HairSalons Team by Sara and Ivona
+            </div>
+        </div>
+    </div>
+{% endapply %}
