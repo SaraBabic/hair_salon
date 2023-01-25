@@ -152,7 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isBanned = false;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy:'user', cascade: ['persist', 'remove'])]
     private ?HairdresserDetails $hairdresserDetails = null;
 
     public function __construct()

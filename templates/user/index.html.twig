@@ -3,10 +3,10 @@
 {% block title %}My Reservations{% endblock %}
 
 {% block body %}
-    <div class="plant-bg">
+    <div class="plant-bg" style="height: fit-content">
         <div class="w-50 m-auto">
             <h1>{{ user.email }}</h1>
-            <table class="table table-hover">
+            <table class="table table-hover text-white">
                 <thead>
                     <tr>
                         <th>Salon</th>
@@ -21,23 +21,58 @@
                 <tbody>
                 {% for reservation in reservations %}
                     <tr>
-                        <th>{{ reservation.getHairdresser().getHairdresserDetails().getSalon().getName() }}</th>
-                        <th>{{ reservation.hairdresser }}</th>
-                        <th>
+                        <td>{{ reservation.getHairdresser().getHairdresserDetails().getSalon().getName() }}</td>
+                        <td>{{ reservation.hairdresser }}</td>
+                        <td>
                             {% for service in reservation.getReservationServices() %}
                                 {{ service.getId() }}
                             {% endfor %}
-                        <th>{{ reservation.startAt|date('d.m H:i') }}</th>
-                        <th>{{ reservation.endAt|date('d.m H:i') }}</th>
-                        <th><a href="{{ path('cancel_reservation', {id: user.id, reservation_id: reservation.id}) }}">
-                                <button type="reset" class="btn {{ reservation.canceled?"btn-danger":"btn-success" }}">
-                                    {{ reservation.canceled?"Canceled":"Cancel" }}
-                                </button>
-                            </a></th>
-                        <th>Rate</th>
+                        <td>{{ reservation.startAt|date('d.m. H:i') }}</td>
+                        <td>{{ reservation.endAt|date('d.m. H:i') }}</td>
+                        <td>
+                            {% if reservation.canceled %}
+                                <button class="btn btn-danger disabled">Canceled</button>
+                            {% elseif reservation.endAt < date() %}
+                                <button class="btn btn-info disabled">Cancel</button>
+                            {% else %}
+                                <a href="{{ path('cancel_reservation', {id: user.id, reservation_id: reservation.id}) }}">
+                                    <button class="btn btn-info">Cancel</button>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% set stars = 0 %}
+                            {% for rate in ratings %}
+                                {% if rate.salon.id == reservation.hairdresser.hairdresserDetails.salon.id %}
+                                    {% set stars = stars + rate.rate %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if reservation.endAt < date() and not reservation.canceled %}
+                                {% if stars > 0 %}
+                                    <div class="text-center">
+                                        {% for i in 1..stars %}
+                                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <a href="{{ path('app_rate_salon', {id:reservation.customer.id, salon_id: reservation.hairdresser.hairdresserDetails.salon.id}) }}">
+                                        <button class="btn btn-warning">RATE!</button>
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                {% if stars > 0 %}
+                                    <div class="text-center">
+                                        {% for i in 1..stars %}
+                                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <button class="btn btn-dark disabled">RATE!</button>
+                                {% endif %}
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
-
                 </tbody>
             </table>
 
