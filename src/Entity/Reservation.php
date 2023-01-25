@@ -74,8 +74,9 @@ class Reservation
     #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: ReservationServices::class, cascade: ['persist', 'remove'])]
     private Collection $reservationServices;
 
+    #[Groups(['reservation:read', 'reservation:write', 'reservation:put'])]
     #[ORM\Column(nullable: true)]
-    private ?bool $canceled = null;
+    private ?bool $canceled = false;
 
     public function __construct()
     {
