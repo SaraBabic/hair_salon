@@ -58,4 +58,13 @@ class SalonRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findSalonsByPartialName(string $name){
+        return $this->createQueryBuilder('s')
+            ->where('s.name LIKE \'%'.$name.'%\'')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }
