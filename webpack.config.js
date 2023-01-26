@@ -33,6 +33,9 @@ Encore
     .addEntry('salonCreate', './assets/scripts/salonCreate.js')
     .addEntry('hairdresserCreate', './assets/scripts/hairdresserCreate.js')
     .addEntry('ratingScript', './assets/scripts/rating.js')
+    .addEntry('services', './assets/scripts/services.js')
+    .addEntry('workingHours', './assets/scripts/workingHours.js')
+    .addEntry('editSalon', './assets/scripts/editSalon.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

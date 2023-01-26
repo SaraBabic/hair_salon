@@ -6,8 +6,8 @@
     <div class="plant-bg  plant-height">
         <div class="m-auto">
             <h1>{{ salon.name }}</h1>
-            <h3>Working hours</h3>
-            <div>
+            <h3 class="text-white">Working hours</h3>
+            <div class="text-white">
                 {{ form_start(form, {'attr' : {'class': 'working-hours-form'}})}}
 
                 {{ form_widget(form) }}
@@ -17,4 +17,9 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('workingHours') }}
 {% endblock %}

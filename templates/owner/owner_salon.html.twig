@@ -6,7 +6,7 @@
     <div class="plant-bg  plant-height">
         <div class="w-50 m-auto">
             <h1>{{ salon.name }}</h1>
-            <div>
+            <div class="text-white">
                 {{ form_start(form)}}
                 {{ form_widget(form) }}
                 <img src="{{ asset('build/images/uploads/'~ salon.imagePath) }}" alt="img" height="200" style="border-radius: 6px">
@@ -17,4 +17,9 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('editSalon') }}
 {% endblock %}
