@@ -51,4 +51,10 @@
     </div>
 </form>
     </div>
+
+    {% block javascripts %}
+        {{ parent() }}
+        {{ encore_entry_script_tags('login') }}
+    {% endblock %}
+
 {% endblock %}

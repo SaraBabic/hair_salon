@@ -6,12 +6,15 @@ use App\Entity\HairdresserDetails;
 use App\Entity\Reservation;
 use App\Entity\ReservationServices;
 use App\Entity\Salon;
+use App\Entity\SalonRating;
 use App\Entity\SalonServices;
 use App\Entity\User;
 use App\Form\HairdresserCreateForm;
 use App\Form\SalonForm;
 use App\Form\ServiceCreateForm;
 use App\Form\WorkingHoursForm;
+use App\Repository\SalonRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +40,7 @@ class MyReservationsController extends AbstractController
         $hairdresserDetails = $doctrine->getRepository(HairdresserDetails::class);
         $reservationServices = $doctrine->getRepository(ReservationServices::class);
         $servicesRepository = $doctrine->getRepository(SalonServices::class);
+        $ratings  = $doctrine->getRepository(SalonRating::class)->findBy(['user'=>$user]);
         /** @var Reservation $reservation */
 
 
@@ -45,7 +49,8 @@ class MyReservationsController extends AbstractController
             'user' => $user,
             'salons' => $salons,
             'reservations' => $reservations,
-            'hairdressers' => $hairdresserDetails
+            'hairdressers' => $hairdresserDetails,
+            'ratings' => $ratings
         ]);
     }
 
@@ -71,4 +76,36 @@ class MyReservationsController extends AbstractController
             'id' => $id,
         ]);
     }
+
+    #[Route('user/{id}/salon/{salon_id}/rate', name: 'app_rate_salon')]
+    public function rateSalon(int $id, int $salon_id, SalonRepository $salonRepository):Response
+    {
+        if(!$this->getUser()){
+            $this->redirectToRoute('app_home');
+        }
+        $salon = $salonRepository->findOneBy(['id'=>$salon_id]);
+
+        return $this->render('user/rating.html.twig',[
+            'salon'=>$salon
+        ]);
+    }
+    #[Route('user/{id}/salon/{salon_id}/rate/save', name: 'app_save_rate_salon')]
+    public function saveRateSalon(Request $request, int $id, int $salon_id, SalonRepository $salonRepository, UserRepository $userRepository, EntityManagerInterface $em):Response
+    {
+        $user = $userRepository->findOneBy(['id'=>$id]);
+        $salon = $salonRepository->findOneBy(['id'=>$salon_id]);
+        $rate = $request->get('stars');
+        $rating = new SalonRating();
+        $rating->setUser($user);
+        $rating->setSalon($salon);
+        $rating->setRate($rate[0]);
+        $em->persist($rating);
+        $em->flush();
+
+        return $this->redirectToRoute('app_user_reservations', [
+            'user'=>$user,
+            'id'=>$id
+        ]);
+    }
+
 }

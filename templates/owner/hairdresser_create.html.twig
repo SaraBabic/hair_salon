@@ -3,8 +3,8 @@
 {% block title %}Salon owner dashboard{% endblock %}
 
 {% block body %}
-    <div class="plant-bg ">
-        <div class="w-50 m-auto">
+    <div class="plant-bg" style="height: fit-content">
+        <div class="w-50 mx-auto text-white">
             <h1>{{ salon.name }}</h1>
             <h2>Add hairdresser to your salon!</h2>
 
@@ -16,4 +16,9 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('hairdresserCreate') }}
 {% endblock %}

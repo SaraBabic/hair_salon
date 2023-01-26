@@ -22,6 +22,10 @@ class SalonController extends AbstractController
         if($city){
             $salons = $doctrine->getRepository(Salon::class)->findBy(['city'=>$city]);
         }
+        $name = $request->get('salonName');
+        if($name){
+            $salons = $doctrine->getRepository(Salon::class)->findSalonsByPartialName($name);
+        }
 
         return $this->render('salon/index.html.twig', [
             'salons' => $salons,

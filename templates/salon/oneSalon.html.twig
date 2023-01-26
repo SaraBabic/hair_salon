@@ -34,7 +34,11 @@
                             </h5>
                             <ul style="list-style: none">
                                 {% for work_hour in salon.salonWorkingHours %}
-                                    <li><span>{{ work_hour.dayName }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
+                                    {% if work_hour.openingAt and work_hour.closingAt %}
+                                        <li><span>{{ work_hour.dayName }}</span> {{ work_hour.openingAt|date('H:i') }} - {{ work_hour.closingAt|date('H:i') }}</li>
+                                    {% else %}
+                                        <li><span>{{ work_hour.dayName }}</span> - CLOSED </li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         </div>

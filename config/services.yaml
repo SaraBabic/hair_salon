@@ -60,3 +60,10 @@ services:
                 name: 'doctrine.orm.entity_listener'
                 event: 'preUpdate'
                 entity: 'App\Entity\Salon'
+
+    App\EventListener\MailOnHairdresserCreatingBySalonOwner:
+        tags:
+            -
+                name: 'doctrine.orm.entity_listener'
+                event: 'postPersist'
+                entity: 'App\Entity\HairdresserDetails'

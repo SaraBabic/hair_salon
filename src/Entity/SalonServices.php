@@ -184,4 +184,9 @@ class SalonServices
         return $this;
     }
 
+    public function getServiceTimeAndPrice():string
+    {
+        return $this->duration . ' mins, ' . $this->price .' din';
+    }
+
 }

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rate {{ salon.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="plant-bg">
+        <h1>Rate {{ salon.name }}!</h1>
+        <p class="text-center text-white mt-5">Thank you for visiting our salon! <br>
+            We would love to know how you
+            liked our service by giving us a rate!</p>
+
+        <form action="{{ path('app_save_rate_salon',{id: app.user.id, salon_id: salon.id}) }}" method="post" class="mx-auto text-center rounded bg-light w-50 pt-4 pb-3 mt-4">
+            <input type="radio" name="stars" value="1" id="star1" style="visibility: hidden">
+            <label for="star1" id="start1Label" style="cursor: pointer"><img src="{{ asset('build/images/empty_star_icon.png') }}" alt="star" width="50px"></label>
+
+            <input type="radio" name="stars" value="2" id="star2" style="visibility: hidden">
+            <label for="star2" id="start2Label" style="cursor: pointer"><img src="{{ asset('build/images/empty_star_icon.png') }}" alt="star" width="50px"></label>
+
+            <input type="radio" name="stars" value="3" id="star3" style="visibility: hidden">
+            <label for="star3" id="start3Label" style="cursor: pointer"><img src="{{ asset('build/images/empty_star_icon.png') }}" alt="star" width="50px"></label>
+
+            <input type="radio" name="stars" value="4" id="star4" style="visibility: hidden">
+            <label for="star4" id="start4Label" style="cursor: pointer"><img src="{{ asset('build/images/empty_star_icon.png') }}" alt="star" width="50px"></label>
+
+            <input type="radio" name="stars" value="5" id="star5" style="visibility: hidden">
+            <label for="star5" id="start5Label" style="cursor: pointer"><img src="{{ asset('build/images/empty_star_icon.png') }}" alt="star" width="50px"></label>
+
+            <br>
+            <button type="submit" class="btn btn-success mt-4">Submit</button>
+        </form>
+
+    </div>
+
+    {% block javascripts %}
+        {{ parent() }}
+        {{ encore_entry_script_tags('ratingScript') }}
+    {% endblock %}
+
+{% endblock %}

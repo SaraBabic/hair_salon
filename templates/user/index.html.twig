@@ -3,7 +3,7 @@
 {% block title %}My Reservations{% endblock %}
 
 {% block body %}
-    <div class="plant-bg">
+    <div class="plant-bg" style="height: fit-content">
         <div class="w-50 m-auto">
             <h1>{{ user.firstname }} {{ user.lastname }} - Reservations</h1>
 
@@ -22,9 +22,9 @@
                 <tbody>
                 {% for reservation in reservations %}
                     <tr>
-                        <th>{{ reservation.getHairdresser().getHairdresserDetails().getSalon().getName() }}</th>
-                        <th>{{ reservation.hairdresser }}</th>
-                        <th>
+                        <td>{{ reservation.getHairdresser().getHairdresserDetails().getSalon().getName() }}</td>
+                        <td>{{ reservation.hairdresser }}</td>
+                        <td>
                             {% for service in reservation.getReservationServices() %}
                                 <p>{{ service.service.getName() }}</p>
                             {% endfor %}
@@ -55,7 +55,6 @@
                                 </button>
                             {% endif %}
                             </th>
-                        <th>Rate</th>
                         <div class="modal fade" id="modal{{ reservation.id }}" tabindex="-1" role="dialog" aria-labelledby="modal{{ reservation.id }}Label" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -75,9 +74,39 @@
                                 </div>
                             </div>
                         </div>
+                        <td>
+                            {% set stars = 0 %}
+                            {% for rate in ratings %}
+                                {% if rate.salon.id == reservation.hairdresser.hairdresserDetails.salon.id %}
+                                    {% set stars = stars + rate.rate %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if reservation.endAt < date() and not reservation.canceled %}
+                                {% if stars > 0 %}
+                                    <div class="text-center">
+                                        {% for i in 1..stars %}
+                                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <a href="{{ path('app_rate_salon', {id:reservation.customer.id, salon_id: reservation.hairdresser.hairdresserDetails.salon.id}) }}">
+                                        <button class="btn btn-warning">RATE!</button>
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                {% if stars > 0 %}
+                                    <div class="text-center">
+                                        {% for i in 1..stars %}
+                                            <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <button class="btn btn-dark disabled">RATE!</button>
+                                {% endif %}
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
-
                 </tbody>
             </table>
 
