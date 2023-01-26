@@ -364,7 +364,13 @@ textarea {
 #freeHours {
     margin: 15px;
 }
+.hairdresserCard{
+    margin: 15px;
+}
 @media only screen and (max-width: 990px){
+    .hairdresserCard{
+        margin: 20px auto;
+    }
     .footer-image {
         display: none;
     }
