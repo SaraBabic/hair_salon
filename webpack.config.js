@@ -25,9 +25,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('header', './assets/scripts/header.js')
-<<<<<<< HEAD
     .addEntry('datatable', './assets/scripts/datatable.js')
-=======
     .addEntry('changePassword', './assets/scripts/changePassword.js')
     .addEntry('editProfile', './assets/scripts/editProfile.js')
     .addEntry('forgotPassword', './assets/scripts/forgotPassword.js')
@@ -36,7 +34,6 @@ Encore
     .addEntry('salonCreate', './assets/scripts/salonCreate.js')
     .addEntry('hairdresserCreate', './assets/scripts/hairdresserCreate.js')
     .addEntry('ratingScript', './assets/scripts/rating.js')
->>>>>>> 223fe6c52f8a31551318055159dfa5ebad459ffb
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
