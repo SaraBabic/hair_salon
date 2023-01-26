@@ -78,7 +78,11 @@
                             </ul>
                         </div>
                         <br>
-                        <a href="{{ path('app_salon_reservation', {id: salon.id}) }}"><button class="btn mt-5 blue-button" >Make an appointment</button></a>
+                        {% if user %}
+                            <a href="{{ path('app_salon_reservation', {id: salon.id}) }}"><button class="btn mt-5 blue-button" >Make an appointment</button></a>
+                        {% else %}
+                            <p>To make an appointment you have to <a href="{{ path('app_login') }}">Login!</a></p>
+                        {% endif %}
                         <br>
                         <br>
                     </div>

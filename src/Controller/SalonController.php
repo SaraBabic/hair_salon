@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\HairdresserDetails;
 use App\Entity\Salon;
+use App\Entity\User;
 use App\Repository\SalonRatingRepository;
 use App\Repository\SalonRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -35,6 +36,7 @@ class SalonController extends AbstractController
     #[Route('/salon/{id}/show', name:'app_salon_by_id')]
     public function salonById(SalonRepository $repository, SalonRatingRepository $ratingRepository, int $id, ManagerRegistry $doctrine):Response
     {
+        $user = $this->getUser();
         $salon = $repository->findOneBy(['id'=>$id]);
         $salonRating = $ratingRepository->findAverageRatingForSalon($id);
 
@@ -43,7 +45,8 @@ class SalonController extends AbstractController
         return $this->render('salon/oneSalon.html.twig',[
             'salon'=>$salon,
             'rating' => $salonRating[0],
-            'hairdressers' => $hairdressers
+            'hairdressers' => $hairdressers,
+            'user' => $user
         ]);
     }
 }
