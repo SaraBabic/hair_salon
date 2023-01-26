@@ -71,7 +71,9 @@
                                 Our hairdressers:</h5>
                             <ul style="list-style: none">
                                 {% for hairdresser in hairdressers %}
-                                    <li>{{ hairdresser.user }}</li>
+                                    {% if hairdresser.isactive %}
+                                        <li>{{ hairdresser.user }}</li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         </div>

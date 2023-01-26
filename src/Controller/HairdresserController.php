@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Reservation;
 use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,10 +18,13 @@ class HairdresserController extends AbstractController {
         /** @var User $user */
         $user = $userRepository->find($id);
         $salon = $user->getSalon();
+        $reservations = $doctrine->getRepository(Reservation::class)->findBy(['hairdresser' => $user] );
+
 
         return $this->render('hairdresser/index.html.twig', [
             'salon' => $salon,
             'user' => $user,
+            'reservations' => $reservations,
         ]);
     }
 }

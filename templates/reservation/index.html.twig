@@ -48,8 +48,10 @@
                                     <h5><img src="{{ asset('build/images/hairdresser.png') }}" alt="scissor" width="25" height="25">
                                         Choose your hairdresser:</h5>
                                     {% for hairdresser in hairdressers %}
-                                        <input type="radio" id="{{ hairdresser.id }}" name="hairdresser" value="{{ hairdresser.getUser().getId() }}">
-                                        <label for="hairdresser">{{ hairdresser.user }}</label><br>
+                                        {% if hairdresser.isactive %}
+                                            <input type="radio" id="{{ hairdresser.id }}" name="hairdresser" value="{{ hairdresser.getUser().getId() }}">
+                                            <label for="hairdresser">{{ hairdresser.user }}</label><br>
+                                         {% endif %}
                                     {% endfor %}
                                 </div>
                                 <div style="padding: 15px">

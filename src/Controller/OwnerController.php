@@ -227,9 +227,10 @@ class OwnerController extends AbstractController {
             $user->setEmail($formData['email']);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
-                $user,
-                $formData['password']
-            ));
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
             $user->setRoles(["ROLE_HAIRDRESSER"]);
             $user->setIsVerified(true);
             $user->setPhoneNumber('Your phone number');
