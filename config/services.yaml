@@ -67,3 +67,10 @@ services:
                 name: 'doctrine.orm.entity_listener'
                 event: 'postPersist'
                 entity: 'App\Entity\HairdresserDetails'
+
+    App\EventListener\MailOnCustomerCancelingReservation:
+        tags:
+            -
+                name: 'doctrine.orm.entity_listener'
+                event: 'preUpdate'
+                entity: 'App\Entity\Reservation'
