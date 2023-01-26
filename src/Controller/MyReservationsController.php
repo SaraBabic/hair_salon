@@ -65,10 +65,7 @@ class MyReservationsController extends AbstractController
         /** @var Reservation $reservation */
         $reservation = $reservationRepository->find($reservation_id);
 
-        if($reservation->getCanceled()) {
-            $reservation->setCanceled(false);
-        }
-        else {
+        if(!$reservation->getCanceled()) {
             $reservation->setCanceled(true);
         }
 

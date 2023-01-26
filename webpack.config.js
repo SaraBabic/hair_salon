@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('header', './assets/scripts/header.js')
+    .addEntry('datatable', './assets/scripts/datatable.js')
     .addEntry('changePassword', './assets/scripts/changePassword.js')
     .addEntry('editProfile', './assets/scripts/editProfile.js')
     .addEntry('forgotPassword', './assets/scripts/forgotPassword.js')
