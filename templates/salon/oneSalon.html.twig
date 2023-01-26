@@ -71,12 +71,18 @@
                                 Our hairdressers:</h5>
                             <ul style="list-style: none">
                                 {% for hairdresser in hairdressers %}
-                                    <li>{{ hairdresser.user }}</li>
+                                    {% if hairdresser.isactive %}
+                                        <li>{{ hairdresser.user }}</li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         </div>
                         <br>
-                        <a href="{{ path('app_salon_reservation', {id: salon.id}) }}"><button class="btn mt-5 blue-button" >Make an appointment</button></a>
+                        {% if user %}
+                            <a href="{{ path('app_salon_reservation', {id: salon.id}) }}"><button class="btn mt-5 blue-button" >Make an appointment</button></a>
+                        {% else %}
+                            <p>To make an appointment you have to <a href="{{ path('app_login') }}">Login!</a></p>
+                        {% endif %}
                         <br>
                         <br>
                     </div>

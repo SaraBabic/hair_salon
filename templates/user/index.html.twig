@@ -7,6 +7,7 @@
         <div class="w-50 m-auto">
             <h1 class="mb-3">{{ user.firstname }} {{ user.lastname }} - Reservations</h1>
 
+            {% if reservations %}
             <table class="table table-dark table-hover" id="dataTable">
                 <thead>
                     <tr>
@@ -111,6 +112,9 @@
                 {% endfor %}
                 </tbody>
             </table>
+            {% else %}
+                <h2 class="center">You don't have reservations!</h2>
+            {% endif %}
 
         </div>
     </div>

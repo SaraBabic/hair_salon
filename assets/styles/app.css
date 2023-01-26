@@ -162,6 +162,9 @@ footer h5 {
     background: #75BBBF;
     padding: 8px 30px;
 }
+.center {
+    text-align: center;
+}
 .care h1 {
     color: #fff;
     font-size: 60px;
