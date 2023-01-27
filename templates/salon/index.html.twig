@@ -50,6 +50,10 @@
                 </a>
             </div>
         {% endfor %}
+
+        {% if not salons %}
+            <div class="text-center text-white">No salons found.</div>
+        {% endif %}
     </div>
 </div>
 
