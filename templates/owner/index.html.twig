@@ -4,18 +4,20 @@
 
 {% block body %}
     <div class="plant-bg">
-        <h1>{{ salon.name }}</h1>
-        <div class="owner-links">
-            <a class="nav-link" href="{{ path('app_owner_salon_show', {id: user.id, salon_id: salon.id }) }}">My salon</a>
+        <div class="center-content">
+            <h1>{{ salon.name }}</h1>
+            <div class="owner-links">
+                <a class="nav-link" href="{{ path('app_owner_salon_show', {id: user.id, salon_id: salon.id }) }}">My salon</a>
 
-            <a class="nav-link" href="{{ path('app_owner_working_hours',{id: user.id, salon_id: salon.id }) }}">Salon's Working Hours</a>
+                <a class="nav-link" href="{{ path('app_owner_working_hours',{id: user.id, salon_id: salon.id }) }}">Salon's Working Hours</a>
 
-            <a class="nav-link" href="{{ path('app_salon_services', {id: user.id, salon_id: salon.id }) }}">Salon's Services</a>
+                <a class="nav-link" href="{{ path('app_salon_services', {id: user.id, salon_id: salon.id }) }}">Salon's Services</a>
 
-            <a class="nav-link" href="{{ path('app_owner_hairdressers', {id: user.id, salon_id: salon.id }) }}">Hairdressers</a>
+                <a class="nav-link" href="{{ path('app_owner_hairdressers', {id: user.id, salon_id: salon.id }) }}">Hairdressers</a>
 
-            <a class="nav-link" href="{{ path('app_reservations', {id: user.id, salon_id: salon.id }) }}">Salon Reservations</a>
+                <a class="nav-link" href="{{ path('app_reservations', {id: user.id, salon_id: salon.id }) }}">Salon Reservations</a>
 
+            </div>
         </div>
     </div>
 {% endblock %}
