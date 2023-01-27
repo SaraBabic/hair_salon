@@ -7,11 +7,21 @@
 <div class="plant-bg">
     <div class="w-50 mx-auto pt-4 text-light">
         <h3 class="mb-4">Profile info</h3>
-        {{ form_start(form)}}
-        {{ form_widget(form) }}
-        <br>
-        <button class="btn blue-button" type="submit">Update</button>
-        {{ form_end(form)}}
+        {% if 'ROLE_HAIRDRESSER' in role %}
+            {{ form_start(form)}}
+            {{ form_widget(form) }}
+            <label for="biography">Biography</label> <br>
+            <input type="text" class="form-control" value="{{ app.user.hairdresserDetails.biography }}" name="biography">
+            <br>
+            <button class="btn blue-button" type="submit">Update</button>
+            {{ form_end(form)}}
+        {% else %}
+            {{ form_start(form)}}
+            {{ form_widget(form) }}
+            <br>
+            <button class="btn blue-button" type="submit">Update</button>
+            {{ form_end(form)}}
+        {% endif %}
     </div>
 </div>
 
