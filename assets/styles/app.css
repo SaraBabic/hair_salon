@@ -321,11 +321,12 @@ h1 {
 h3 {
     text-align: center;
 }
+/*
 .alert {
     position: absolute;
     width: 100%;
-    top: 60px;
-}
+    top: 70px;
+}*/
 
 textarea {
     height: 200px;
@@ -363,7 +364,13 @@ textarea {
 #freeHours {
     margin: 15px;
 }
+.hairdresserCard{
+    margin: 15px;
+}
 @media only screen and (max-width: 990px){
+    .hairdresserCard{
+        margin: 20px auto;
+    }
     .footer-image {
         display: none;
     }

@@ -88,6 +88,20 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row mx-5">
+                {% for hairdresser in salon.hairdresser %}
+                    <div class="col-lg col-md-8 col-sm-12 card p-3 hairdresserCard">
+                        <h5 class="card-title text-center">
+                            <img src="{{ asset('build/images/hairdresser_person.png') }}"
+                                 alt="hairdresser" width="35px" class="me-1">
+                            {{ hairdresser.user.firstName }} {{ hairdresser.user.lastName }}
+                        </h5>
+                        <hr class="w-50 mx-auto mt-0">
+                        <p class="card-text p-2 fst-italic">„ {{ hairdresser.biography }} ”</p>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
 
     </div>

@@ -9,7 +9,7 @@
         <h1 class="h3 mb-4 font-weight-normal">Please sign in</h1>
 
         {% if error %}
-            <div class="alert alert-danger">{{ error.message|trans(error.messageData, 'security') }}</div>
+            <div class="alert alert-danger w-50">{{ error.message|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
         {% if app.user %}

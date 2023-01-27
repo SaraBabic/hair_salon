@@ -1,12 +1,8 @@
 {% apply inline_css(source('@styles/email.css')) %}
     <div class="all">
-        <h2>Hi, {{ user }}!</h2>
+        <h2>Hi! You have one canceled appointment.</h2>
         <p>
-            Owner of your salon has made profile for you!<br>
-            You can <a href="http://127.0.0.1:8000/login">log in</a> to your account and update your bio!
-        </p>
-        <p>
-            We wish you all the best!
+            Customer {{ user }} has canceled your appointment on {{ date|date('d.m. H:i') }}.
         </p>
         <hr>
         <div class="signature">
