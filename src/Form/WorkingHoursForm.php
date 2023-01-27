@@ -53,13 +53,19 @@ class WorkingHoursForm extends AbstractType
             $builder->add("{$day}From", ChoiceType::class, [
                 'attr'=> $attr,
                 'label' => $labelFrom,
-                'choices' => $defaultChoices,
+                'choices' => array_keys($defaultChoices),
+                'choice_label' => function ($choice, $key, $value){
+                    return $value;
+                },
                 'data' => isset($salonWorkingHours[$dayNumber]['from']) ? substr($salonWorkingHours[$dayNumber]['from'], 0, 2) : $from,
             ]);
             $builder->add("{$day}To", ChoiceType::class, [
                 'attr'=> $attr,
                 'label' => $labelTo,
-                'choices' => $defaultChoices,
+                'choices' => array_keys($defaultChoices),
+                'choice_label' => function ($choice, $key, $value){
+                    return $value;
+                },
                 'data' => isset($salonWorkingHours[$dayNumber]['to']) ? substr($salonWorkingHours[$dayNumber]['to'], 0, 2) :  $to,
             ]);
         }

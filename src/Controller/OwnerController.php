@@ -132,7 +132,8 @@ class OwnerController extends AbstractController {
         $user = $userRepository->find($id);
         $salon = $user->getSalon();
 
-        $existingWorkingHours = $salon->getSalonWorkingHours();
+        /** @var SalonWorkingHours[] $existingWorkingHours*/
+        $existingWorkingHours = $doctrine->getRepository(SalonWorkingHours::class)->findBy(['salon' => $salon->getId()]);
 
         $form = $this->createForm(WorkingHoursForm::class, null,
             ['hours' => $existingWorkingHours]
