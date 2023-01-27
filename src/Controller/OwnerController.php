@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\HairdresserDetails;
+use App\Entity\Reservation;
 use App\Entity\Salon;
 use App\Entity\SalonServices;
 use App\Entity\User;
@@ -284,6 +285,23 @@ class OwnerController extends AbstractController {
         return $this->redirectToRoute('app_owner_hairdressers', [
             'id' => $id,
             'salon_id' => $salon->getId()
+        ]);
+    }
+
+    #[Route('/owner/{id}/salon/{salon_id}/reservations', name: 'app_reservations')]
+    public function salon_reservations( ManagerRegistry $doctrine, EntityManagerInterface $entityManager, $id): Response
+    {
+        $userRepository = $doctrine->getRepository(User::class);
+        /** @var User $user */
+        $user = $userRepository->find($id);
+        $salon = $user->getSalon();
+
+        $reservations = $doctrine->getRepository(Reservation::class)->findBy(['salon' => $salon] );
+        return $this->render('owner/reservations.html.twig', [
+            'id' => $id,
+            'salon' => $salon,
+            'salon_id' => $salon->getId(),
+            'reservations' => $reservations,
         ]);
     }
 

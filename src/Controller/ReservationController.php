@@ -110,6 +110,8 @@ class ReservationController extends AbstractController {
         $startAt =  $dateOfReservation . ' ' . $timeOfReservation;
         $totalDuration = (int) $request->get('td');
 
+        $salon = (int)  $request->get('salon');
+
         $endAt = new \DateTime($startAt);
         $endAt->add(new \DateInterval('PT' . $totalDuration . 'M'));
 
@@ -124,6 +126,7 @@ class ReservationController extends AbstractController {
         $res->setEndAt(new \DateTimeImmutable($endAt->format('Y-m-d H:i:s')));
         $res->setHairdresser($hd);
         $res->setCustomer($this->getUser());
+        $res->setSalon($salon);
         $em->persist($res);
         $em->flush();
 

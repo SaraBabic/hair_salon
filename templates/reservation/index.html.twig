@@ -45,6 +45,7 @@
                         <form action="/reservation" method="post">
                             <div class="d-flex">
                                 <div style="padding: 15px">
+                                    <input type="hidden" name="salon" value="{{ salon.id }}">
                                     <h5><img src="{{ asset('build/images/hairdresser.png') }}" alt="scissor" width="25" height="25">
                                         Choose your hairdresser:</h5>
                                     {% for hairdresser in hairdressers %}

@@ -78,6 +78,9 @@ class Reservation
     #[ORM\Column(nullable: true)]
     private ?bool $canceled = false;
 
+    #[ORM\Column]
+    private ?int $salon = null;
+
     public function __construct()
     {
         $this->reservationServices = new ArrayCollection();
@@ -174,6 +177,18 @@ class Reservation
     public function setCanceled(?bool $canceled): self
     {
         $this->canceled = $canceled;
+
+        return $this;
+    }
+
+    public function getSalon(): ?int
+    {
+        return $this->salon;
+    }
+
+    public function setSalon(int $salon): self
+    {
+        $this->salon = $salon;
 
         return $this;
     }
