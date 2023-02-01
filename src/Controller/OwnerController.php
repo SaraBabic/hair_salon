@@ -30,6 +30,9 @@ class OwnerController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
 
         return $this->render('owner/index.html.twig', [
@@ -45,6 +48,9 @@ class OwnerController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
 
         $form = $this->createForm(SalonForm::class, $salon);
@@ -70,6 +76,9 @@ class OwnerController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
 
 
@@ -108,6 +117,9 @@ class OwnerController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
         $form = $this->createForm(ServiceCreateForm::class);
         $service = $doctrine->getRepository(SalonServices::class)->findAll();
@@ -130,6 +142,9 @@ class OwnerController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
 
         /** @var SalonWorkingHours[] $existingWorkingHours*/
@@ -193,6 +208,9 @@ class OwnerController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
 
         $hairdressersRepository = $doctrine->getRepository(HairdresserDetails::class)->find($salon);
@@ -214,6 +232,9 @@ class OwnerController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
 
         $form = $this->createForm(HairdresserCreateForm::class);
@@ -295,6 +316,9 @@ class OwnerController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
 
         $reservations = $doctrine->getRepository(Reservation::class)->findBy(['salon' => $salon] );

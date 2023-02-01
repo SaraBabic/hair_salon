@@ -23,6 +23,9 @@ class ReservationController extends AbstractController {
     public function salonReservation(SalonRepository $repository, SalonRatingRepository $ratingRepository, int $id, ManagerRegistry $doctrine):Response
     {
         $salon = $repository->findOneBy(['id'=>$id]);
+        if(!$salon){
+            return $this->redirectToRoute('app_home');
+        }
         $salonRating = $ratingRepository->findAverageRatingForSalon($id);
 
         $hairdressers = $doctrine->getRepository(HairdresserDetails::class)->findBy(['salon' => $salon->getId()]);

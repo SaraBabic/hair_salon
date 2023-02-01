@@ -38,6 +38,9 @@ class SalonController extends AbstractController
     {
         $user = $this->getUser();
         $salon = $repository->findOneBy(['id'=>$id]);
+        if(!$salon){
+            return $this->redirectToRoute('app_home');
+        }
         $salonRating = $ratingRepository->findAverageRatingForSalon($id);
 
         $hairdressers = $doctrine->getRepository(HairdresserDetails::class)->findBy(['salon' => $salon->getId()]);

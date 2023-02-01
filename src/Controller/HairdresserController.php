@@ -17,6 +17,9 @@ class HairdresserController extends AbstractController {
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $user->getSalon();
         $reservations = $doctrine->getRepository(Reservation::class)->findBy(['hairdresser' => $user] );
 
