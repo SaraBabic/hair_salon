@@ -24,6 +24,7 @@ security:
             login_throttling:
                 max_attempts: 5
                 interval: '5 minutes'
+            access_denied_handler: App\Security\AccessDenied
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

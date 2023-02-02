@@ -35,6 +35,9 @@ class MyReservationsController extends AbstractController
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $reservations = $doctrine->getRepository(Reservation::class)->findBy(['customer' => $user] );
         $salons = $doctrine->getRepository(Salon::class);
         $hairdresserDetails = $doctrine->getRepository(HairdresserDetails::class);
@@ -61,10 +64,15 @@ class MyReservationsController extends AbstractController
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $reservationRepository = $doctrine->getRepository(Reservation::class);
         /** @var Reservation $reservation */
         $reservation = $reservationRepository->find($reservation_id);
-
+        if(!$reservation){
+            return $this->redirectToRoute('app_home');
+        }
         if(!$reservation->getCanceled()) {
             $reservation->setCanceled(true);
         }
@@ -84,6 +92,9 @@ class MyReservationsController extends AbstractController
             $this->redirectToRoute('app_home');
         }
         $salon = $salonRepository->findOneBy(['id'=>$salon_id]);
+        if(!$salon){
+            return $this->redirectToRoute('app_home');
+        }
 
         return $this->render('user/rating.html.twig',[
             'salon'=>$salon
@@ -93,7 +104,13 @@ class MyReservationsController extends AbstractController
     public function saveRateSalon(Request $request, int $id, int $salon_id, SalonRepository $salonRepository, UserRepository $userRepository, EntityManagerInterface $em):Response
     {
         $user = $userRepository->findOneBy(['id'=>$id]);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salon = $salonRepository->findOneBy(['id'=>$salon_id]);
+        if(!$salon){
+            return $this->redirectToRoute('app_home');
+        }
         $rate = $request->get('stars');
         $rating = new SalonRating();
         $rating->setUser($user);

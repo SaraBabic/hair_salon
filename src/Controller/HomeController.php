@@ -27,6 +27,9 @@ class HomeController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
         $userRepository = $doctrine->getRepository(User::class);
         /** @var User $user */
         $user = $userRepository->find($id);
+        if(!$user){
+            return $this->redirectToRoute('app_home');
+        }
         $salons = $salonRepository->findFiveBestRatedSalons();
         $cities = $salonRepository->findAllSalonCities();
 
