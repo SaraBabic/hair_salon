@@ -42,25 +42,40 @@
             <h1>There are no cities in database!</h1>
         {% else %}
             {% for i in 0..len %}
-                <div class="card shadow salon mx-auto my-3">
-                    <a href="{{ path('app_salon_by_id', {'id': salons[i].id}) }}" class="text-decoration-none text-black d-block">
-                    <img src="{{ asset('build/images/uploads/' ~ salons[i].imagePath) }}" class="card-img-top salon-image" alt="salon image" width="250" height="250">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ salons[i].name }}</h5>
-                        <p class="card-text">
-                            {% set rate =  0 %}
-                            {% if salons[i].rate > 0 %}
-                            {% set rate = salons[i].rate | round(0,'floor') %}
-                                {% for i in 1..rate %}
-                                <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                <div class="border p-2 my-4 mx-auto home-card">
+                    <a href="{{ path('app_salon_by_id', {'id': salons[i].id}) }}" class="text-decoration-none text-black one-salon">
+                        <div class="p-2">
+                            <img src="{{ asset('build/images/uploads/'~ salons[i].imagePath) }}" alt="img" width="200" height="200">
+                        </div>
+                        <div class="ps-3 pt-2">
+                            <h2>{{ salons[i].name }}</h2>
+                            <div class="d-flex mb-3">
+                                {% set ratings = 0 %}
+                                {% for rate in salons[i].rate | round(0,'floor') %}
+                                    {% set ratings = ratings + rate.rate %}
                                 {% endfor %}
-                            {% endif %}
-                            {% set missing_rate = 5 -  rate %}
-                            {% for i in 1..missing_rate %}
-                                <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
-                            {% endfor %}
-                        </p>
-                    </div>
+                                {% set rate =  0 %}
+                                {% if ratings > 0 %}
+                                    {% set rate = ratings/salons[i].salonRatings.count | slice(0,3) %}
+                                    {% set rate = rate | round(0, 'floor') %}
+                                    {% for i in 1..rate %}
+                                        <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
+                                    {% endfor %}
+                                {% endif %}
+                                {% set missing_rate = 5 -  rate %}
+                                {% for i in 1..missing_rate %}
+                                    <img src="{{ asset('build/images/empty_star_icon.png') }}" alt="empty star" width="22" height="22">
+                                {% endfor %}
+                            </div>
+                            <h5>
+                                <img src="{{ asset('build/images/location_icon.png') }}" alt="location" width="20" height="20">
+                                {{ salons[i].city }}
+                            </h5>
+                            <p>
+                                <img src="{{ asset('build/images/info_icon.png') }}" alt="info" width="20" height="20">
+                                {{ salons[i].description }}
+                            </p>
+                        </div>
                     </a>
                 </div>
             {% endfor %}

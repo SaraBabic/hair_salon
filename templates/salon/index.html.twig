@@ -6,15 +6,15 @@
 <div class="plant-bg plant-height">
     <div class="container-fluid">
 
-        <form action="{{ path('app_salon') }}" method="get" class="text-center searchCity w-50 mx-auto mb-4">
+        <form action="{{ path('app_salon') }}" method="get" class="text-center searchCity salon-card mx-auto mb-4">
             <h3 class="mb-4 fw-bold">Find your salon by searching its name!</h3>
-            <input type="text" placeholder="Search..." name="salonName" class="form-control">
+            <input type="text" placeholder="Search..." name="salonName" class="form-control w-50 mx-auto">
             <button type="submit" class="btn blue-button w-50">Find</button>
         </form>
 
         {% for salon in salons %}
-            <div class="border p-2 my-2 mx-auto salon-card">
-                <a href="{{ path('app_salon_by_id', {'id': salon.id}) }}" class="text-decoration-none text-black d-flex justify-content-evenly">
+            <div class="border p-2 my-4 mx-auto salon-card">
+                <a href="{{ path('app_salon_by_id', {'id': salon.id}) }}" class="text-decoration-none text-black one-salon">
                     <div class="p-2">
                         <img src="{{ asset('build/images/uploads/'~ salon.imagePath) }}" alt="img" width="200" height="200">
                     </div>

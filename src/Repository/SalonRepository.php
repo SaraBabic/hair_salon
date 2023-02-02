@@ -42,7 +42,7 @@ class SalonRepository extends ServiceEntityRepository
 
     public function findFiveBestRatedSalons()
     {
-        $sql = " SELECT s.id, s.name, s.imagePath, (SELECT AVG(sr.rate) FROM App\Entity\SalonRating sr WHERE sr.salon = s.id ) AS rate 
+        $sql = " SELECT s.id, s.name, s.imagePath, s.city, s.description, (SELECT AVG(sr.rate) FROM App\Entity\SalonRating sr WHERE sr.salon = s.id ) AS rate 
                     FROM App\Entity\Salon s WHERE s.isActive = 1 ORDER BY rate DESC";
 
         return $this->getEntityManager()->createQuery($sql)->setMaxResults(5)->getResult();
