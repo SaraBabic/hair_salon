@@ -403,13 +403,30 @@ textarea {
     text-align: center;
     height: 80vh;
 }
+.my-res{
+    width: 80%;
+}
+.my-res table{
+    table-layout: fixed;
+}
+.my-res table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
 @media only screen and (max-width: 990px){
-
+    .my-res{
+        width: 95%;
+    }
+    .my-res table{
+        overflow-x: auto;
+        display: block;
+    }
     .footer-logo img {
-        height: 80px;
+        height: 70px;
     }
     .footer-logo .logo-text {
-        font-size: 65px;
+        font-size: 55px;
     }
     .salon-card {
         width: 90%;
@@ -447,4 +464,109 @@ textarea {
     .home-card {
         width: 90%;
     }
+    .care h1{
+        font-size: 42px;
+    }
+    .care{
+        height: fit-content;
+    }
+    .image-container{
+        height: fit-content;
+    }
+    .plant-bg h1{
+        font-size: 54px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .example-wrapper h3{
+        font-size: 40px;
+    }
+    .plant-bg h1{
+        font-size: 48px;
+    }
+    .plant-bg div{
+        width: 95% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .banner::before, .banner::after{
+        content: none;
+    }
+    .banner{
+        height: 450px;
+    }
+    .care{
+        top: 60%;
+    }
+    .one-salon-card div{
+        display: block !important;
+    }
+    .stars, .one-salon-card h2{
+        text-align: center;
+        margin-left: 0 !important;
+    }
+    .salon-desc{
+        padding-top: 0 !important;
+    }
+    .about-us h2{
+        font-size: 33px;
+    }
+    .about-us h5{
+        font-size: 30px;
+    }
+    .about-us p{
+        font-size: 22px;
+    }
+}
+
+@media screen and (max-width: 600px){
+    .example-wrapper h3{
+        font-size: 32px;
+    }
+    .plant-bg h1{
+        font-size: 45px;
+    }
+    .login_bg{
+        height: fit-content;
+    }
+    .login_bg div, .login_bg form{
+        width: 90% !important;
+        margin: auto;
+        text-align: center;
+    }
+    .login_bg button{
+        width: 65% !important;
+    }
+    .banner{
+        height: 360px;
+    }
+    .one-salon{
+        display: block;
+    }
+    .salon-img{
+        width: 360px;
+        text-align: center;
+    }
+    .developed, .footer-section h5,
+    .home-card p, .salon-card p,
+    .footer-section li{
+        font-size: 22px;
+    }
+    .footer-logo img {
+        height: 40px;
+    }
+    .footer-logo .logo-text , .care h1{
+        font-size: 30px;
+    }
+    .searchCity input{
+        width: 80% !important;
+    }
+    .searchCity button{
+        width: 50% !important;
+    }
+    .one-salon-card{
+        width: 98% !important;
+    }
+
 }

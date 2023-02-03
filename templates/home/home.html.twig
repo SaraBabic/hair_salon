@@ -45,19 +45,14 @@
                 <div class="border p-2 my-4 mx-auto home-card">
                     <a href="{{ path('app_salon_by_id', {'id': salons[i].id}) }}" class="text-decoration-none text-black one-salon">
                         <div class="p-2">
-                            <img src="{{ asset('build/images/uploads/'~ salons[i].imagePath) }}" alt="img" width="200" height="200">
+                            <img class="salon-img" src="{{ asset('build/images/uploads/'~ salons[i].imagePath) }}" alt="img" width="200" height="200">
                         </div>
                         <div class="ps-3 pt-2">
                             <h2>{{ salons[i].name }}</h2>
                             <div class="d-flex mb-3">
-                                {% set ratings = 0 %}
-                                {% for rate in salons[i].rate | round(0,'floor') %}
-                                    {% set ratings = ratings + rate.rate %}
-                                {% endfor %}
                                 {% set rate =  0 %}
-                                {% if ratings > 0 %}
-                                    {% set rate = ratings/salons[i].salonRatings.count | slice(0,3) %}
-                                    {% set rate = rate | round(0, 'floor') %}
+                                {% if salons[i].rate > 0 %}
+                                    {% set rate = salons[i].rate | round(0,'floor') %}
                                     {% for i in 1..rate %}
                                         <img src="{{ asset('build/images/star_icon.png') }}" alt="star" width="22" height="22">
                                     {% endfor %}
@@ -73,7 +68,7 @@
                             </h5>
                             <p>
                                 <img src="{{ asset('build/images/info_icon.png') }}" alt="info" width="20" height="20">
-                                {{ salons[i].description }}
+                                {{ salons[i].description | slice(0,200) ~ '...' }}
                             </p>
                         </div>
                     </a>

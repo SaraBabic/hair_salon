@@ -5,7 +5,7 @@
 
 {% block body %}
     <div class="login_bg" style="height: fit-content;">
-    <div class="w-50 mx-auto py-4">
+    <div class="w-50 mx-auto py-4 pt-5">
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert" id="alertReg">{{ flash_error }}</div>
     {% endfor %}
@@ -16,6 +16,10 @@
         <br>
         <button type="submit" class="btn blue-button">Make account</button>
     {{ form_end(registrationForm) }}
+        <br>
+        <p class="mt-3">You want to be registered as owner of salon?
+            <a href="{{ path('app_salon_create') }}" class="text-white">Let's go!</a>
+        </p>
         <br>
         <p class="mt-3">Already have account?
             <a href="{{ path('app_login') }}" class="text-white">Sign in!</a>

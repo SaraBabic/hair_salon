@@ -16,7 +16,7 @@
             <div class="border p-2 my-4 mx-auto salon-card">
                 <a href="{{ path('app_salon_by_id', {'id': salon.id}) }}" class="text-decoration-none text-black one-salon">
                     <div class="p-2">
-                        <img src="{{ asset('build/images/uploads/'~ salon.imagePath) }}" alt="img" width="200" height="200">
+                        <img class="salon-img" src="{{ asset('build/images/uploads/'~ salon.imagePath) }}" alt="img" width="200" height="200">
                     </div>
                     <div class="ps-3 pt-2">
                         <h2>{{ salon.getName }}</h2>
