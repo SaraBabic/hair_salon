@@ -570,3 +570,16 @@ textarea {
     }
 
 }
+
+@media screen and (max-width: 400px){
+    .banner{
+        height: 220px;
+    }
+    .salon-img{
+        width: 285px;
+    }
+    .one-salon-img{
+        width: 250px;
+        margin-left: -15px;
+    }
+}
