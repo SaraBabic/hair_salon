@@ -79,6 +79,12 @@ class MyReservationsController extends AbstractController
 
         $entityManager->flush();
 
+        if(in_array('ROLE_HAIRDRESSER',$user->getRoles(), true)){
+            return $this->redirectToRoute('app_hairdresser_dashboard',['id'=>$user->getId()]);
+        }
+        if(in_array('ROLE_OWNER',$user->getRoles(), true)){
+            return $this->redirectToRoute('app_reservations', ['id'=>$user->getId(), 'salon_id'=> $user->getSalon()->getId()]);
+        }
         return $this->redirectToRoute('app_user_reservations', [
             'user' => $user,
             'id' => $id,
