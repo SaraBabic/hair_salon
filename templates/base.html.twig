@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="{{ asset('build/images/logo.png') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +17,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.css"/>
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -56,7 +57,7 @@
                     </div>
                 </a>
             {% endif %}
-            <div class="all_nav_links">
+            <div  id="myLinks" class="all_nav_links">
                 {% set admin = false %}
                 {% if app.user %}
                 {% for role in app.user.roles %}
@@ -113,6 +114,21 @@
                 {% endif %}
                 </ul>
             </div>
+
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <img src="{{ asset('build/images/burger.png') }}" alt="hair_salon_logo">
+            </a>
+            <script>
+                function myFunction() {
+                    console.log('test');
+                    var x = document.getElementById("myLinks");
+                    if (x.style.display === "block") {
+                        x.style.display = "none";
+                    } else {
+                        x.style.display = "block";
+                    }
+                }
+            </script>
         </div>
     </nav>
     {% for message in app.flashes('success') %}
@@ -159,6 +175,7 @@
         {{ encore_entry_script_tags('app') }}
         {{ encore_entry_script_tags('header') }}
         {{ encore_entry_script_tags('datatable') }}
+        {{ encore_entry_script_tags('burger') }}
     {% endblock %}
     </body>
 </html>
