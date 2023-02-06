@@ -122,10 +122,16 @@
                 function myFunction() {
                     console.log('test');
                     var x = document.getElementById("myLinks");
+                    const headerx = document.querySelector(".header");
+                    const linksx = document.querySelector("#myLinks");
                     if (x.style.display === "block") {
                         x.style.display = "none";
                     } else {
                         x.style.display = "block";
+                        headerx.classList.add("colored-header");
+                        headerx.classList.remove("transparent-header");
+                        linksx.classList.add("colored-header");
+                        linksx.classList.remove("transparent-header");
                     }
                 }
             </script>
@@ -175,7 +181,6 @@
         {{ encore_entry_script_tags('app') }}
         {{ encore_entry_script_tags('header') }}
         {{ encore_entry_script_tags('datatable') }}
-        {{ encore_entry_script_tags('burger') }}
     {% endblock %}
     </body>
 </html>
