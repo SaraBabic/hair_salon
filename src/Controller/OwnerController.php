@@ -178,8 +178,8 @@ class OwnerController extends AbstractController {
             foreach ($entityData as $index => $workingHours) {
                 $wh = new SalonWorkingHours();
                 $wh->setSalon($salon);
-                $wh->setOpeningAt($workingHours['opening_at']);
-                $wh->setClosingAt($workingHours['closing_at']);
+                $wh->setOpeningAt($workingHours['opening_at'] !== 'closed'? $workingHours['opening_at'].':00:00' : null);
+                $wh->setClosingAt($workingHours['closing_at'] !== 'closed'? $workingHours['closing_at'].':00:00' : null);
                 $wh->setDay($index+1);
                 $em->persist($wh);
             }

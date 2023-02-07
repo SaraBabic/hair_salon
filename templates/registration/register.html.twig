@@ -7,7 +7,7 @@
     <div class="login_bg" style="height: fit-content;">
     <div class="w-50 mx-auto py-4 pt-5">
     {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert" id="alertReg">{{ flash_error }}</div>
+        <div class="alert alert-danger my-4" role="alert" id="alertReg">{{ flash_error }}</div>
     {% endfor %}
 
     <h2 class="pt-5 mb-4">Register</h2>

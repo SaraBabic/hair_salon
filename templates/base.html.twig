@@ -138,10 +138,10 @@
         </div>
     </nav>
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success alert-dismissible mb-3">{{ message }}</div>
+        <div class="alert alert-success alert-dismissible my-5">{{ message }}</div>
     {% endfor %}
     {% for message in app.flashes('error') %}
-        <div class="alert alert-danger mb-3">{{ message }}</div>
+        <div class="alert alert-danger my-5">{{ message }}</div>
     {% endfor %}
 
         {% block body %}{% endblock %}
