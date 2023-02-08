@@ -38,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: SalonRepository::class)]
 class Salon
 {
+    #[Groups(['salon:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -101,7 +102,7 @@ class Salon
      *     minMessage="Image file name must be at least 5 characters long."
      * )
      */
-    #[Groups(['salon:write', 'salon:put'])]
+    #[Groups(['salon:write', 'salon:put', 'salon:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagePath = null;
 

@@ -60,7 +60,7 @@ class HairdresserDetails
      */
     #[Groups([
         'hairdresser:read', 'hairdresser:write', 'hairdresser:put',
-        'user:hairdresser:read'
+        'user:hairdresser:read', 'salon:read'
     ])]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $biography = null;

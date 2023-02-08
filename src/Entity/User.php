@@ -92,7 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([
         'user:read','user:write', 'user:put',
         'hairdresser:read', 'hairdresser:write',
-        'user:hairdresser:read'
+        'user:hairdresser:read', 'salon:read'
     ])]
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
@@ -104,7 +104,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[Groups(['user:read','user:write', 'user:put',
         'hairdresser:read', 'hairdresser:write',
-        'user:hairdresser:read'])]
+        'user:hairdresser:read', 'salon:read'
+    ])]
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
