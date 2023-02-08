@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     BooleanFilter::class, properties: ['isBanned', 'isVerified']
 )]
 #[ApiFilter(
-    SearchFilter::class, properties: ['firstName'=>'partial', 'lastName'=>'partial']
+    SearchFilter::class, properties: ['firstName'=>'partial', 'lastName'=>'partial', 'email'=>'exact']
 )]
 //TODO searchFilter za role
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -81,6 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     minMessage="Password must be at least 8 characters long."
      * )
      */
+    #[Groups(['user:read'])]
     #[ORM\Column]
     private ?string $password = null;
 
