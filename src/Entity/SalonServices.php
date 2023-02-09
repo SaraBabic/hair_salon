@@ -53,6 +53,7 @@ class SalonServices
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['salon:read'])]
     private ?int $id = null;
 
     #[Groups(['salon:read', 'salon:write', 'salon:put',
@@ -70,7 +71,9 @@ class SalonServices
      * )
      */
     #[Groups(['salon:read', 'salon:write', 'salon:put',
-        'services:read', 'services:write', 'services:put'])]
+        'services:read', 'services:write', 'services:put',
+        'reservation:read'
+    ])]
     #[ORM\Column]
     private ?int $price = null;
 

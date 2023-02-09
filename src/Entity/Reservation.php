@@ -42,6 +42,7 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation:read'])]
     private ?int $id = null;
 
     #[Groups(['reservation:read', 'reservation:write', 'reservation:put'])]
@@ -69,7 +70,7 @@ class Reservation
     /**
      * @Assert\Valid()
      */
-    #[Groups(['reservation:read', 'reservation:write'])]
+    #[Groups(['reservation:read'])]
     #[SerializedName('services')]
     #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: ReservationServices::class, cascade: ['persist', 'remove'])]
     private Collection $reservationServices;
@@ -79,6 +80,7 @@ class Reservation
     private ?bool $canceled = false;
 
     #[ORM\Column]
+    #[Groups(['reservation:read', 'reservation:write', 'reservation:put'])]
     private ?int $salon = null;
 
     public function __construct()

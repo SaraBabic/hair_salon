@@ -35,7 +35,7 @@ class ReservationServices
     private ?Reservation $reservation = null;
 
     #[Groups([
-        'reservation:read', 'reservation:write',
+        'reservation:read',
         'reservationServices:read', 'reservationServices:write'
     ])]
     #[SerializedName('salonService')]

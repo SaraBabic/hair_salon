@@ -12,6 +12,7 @@ use App\Form\WorkingHoursForm;
 use App\Repository\SalonRatingRepository;
 use App\Repository\SalonRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
